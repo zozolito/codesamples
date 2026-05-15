@@ -1,0 +1,96 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "BASIC: Build (QB64-PE — Linux / macOS)",
+            "type": "shell",
+            "command": "qb64pe",
+            "args": [
+                "-c", "${workspaceFolder}/src/hello.bas",
+                "-o", "${workspaceFolder}/bin/hello"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "BASIC: Build (QB64-PE — Windows)",
+            "type": "shell",
+            "command": "qb64pe.exe",
+            "args": [
+                "-c", "${workspaceFolder}\\src\\hello.bas",
+                "-o", "${workspaceFolder}\\bin\\hello"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": [],
+            "windows": {
+                "command": "qb64pe.exe"
+            }
+        },
+        {
+            "label": "BASIC: Build (FreeBASIC — Linux / macOS)",
+            "type": "shell",
+            "command": "fbc",
+            "args": [
+                "-x", "${workspaceFolder}/bin/hello",
+                "${workspaceFolder}/src/hello.bas"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": {
+                "owner": "freebasic",
+                "fileLocation": "absolute",
+                "pattern": {
+                    "regexp": "^(.+)\\((\\d+)\\)\\s*.*?:\\s*(warning|error)\\s*(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "severity": 3,
+                    "message": 4
+                }
+            }
+        },
+        {
+            "label": "BASIC: Run",
+            "type": "shell",
+            "command": "${workspaceFolder}/bin/hello",
+            "dependsOn": "BASIC: Build (QB64-PE — Linux / macOS)",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "BASIC: Clean",
+            "type": "shell",
+            "command": "rm",
+            "args": ["-f", "${workspaceFolder}/bin/hello"],
+            "windows": {
+                "command": "cmd",
+                "args": ["/c", "del", "/f", "${workspaceFolder}\\bin\\hello.exe"]
+            },
+            "presentation": {
+                "reveal": "silent",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        }
+    ]
+}
