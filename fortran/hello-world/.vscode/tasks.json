@@ -1,0 +1,88 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Fortran: Build",
+            "type": "shell",
+            "command": "gfortran",
+            "args": [
+                "-g",
+                "-Wall",
+                "-Wextra",
+                "-fcheck=all",
+                "-o", "${workspaceFolder}/bin/hello",
+                "${workspaceFolder}/src/hello.f90"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": {
+                "owner": "fortran",
+                "fileLocation": "absolute",
+                "pattern": {
+                    "regexp": "^(.+\\.f90):(\\d+):(\\d+):\\s+.*\\n.*\\n.*\\n(Warning|Error):\\s+(.+)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+        {
+            "label": "Fortran: Build (optimized)",
+            "type": "shell",
+            "command": "gfortran",
+            "args": [
+                "-O2",
+                "-Wall",
+                "-o", "${workspaceFolder}/bin/hello",
+                "${workspaceFolder}/src/hello.f90"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Fortran: Run",
+            "type": "shell",
+            "command": "${workspaceFolder}/bin/hello",
+            "dependsOn": "Fortran: Build",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Fortran: Clean",
+            "type": "shell",
+            "command": "rm",
+            "args": ["-f", "${workspaceFolder}/bin/hello", "${workspaceFolder}/*.mod"],
+            "windows": {
+                "command": "cmd",
+                "args": ["/c", "del", "/f",
+                    "${workspaceFolder}\\bin\\hello.exe",
+                    "${workspaceFolder}\\*.mod"
+                ]
+            },
+            "presentation": {
+                "reveal": "silent",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        }
+    ]
+}

@@ -1,0 +1,6 @@
+bin/hello
+bin/hello.exe
+bin/*.exe
+*.mod
+*.o
+*.smod

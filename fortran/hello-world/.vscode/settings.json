@@ -1,0 +1,22 @@
+{
+    "files.associations": {
+        "*.f90": "fortran",
+        "*.f95": "fortran",
+        "*.f03": "fortran",
+        "*.f08": "fortran",
+        "*.f":   "fortran-fixed-form",
+        "*.for": "fortran-fixed-form",
+        "*.F90": "fortran"
+    },
+    "fortran.linter.compiler": "gfortran",
+    "fortran.linter.compilerPath": "gfortran",
+    "fortran.linter.extraArgs": [
+        "-Wall",
+        "-Wextra",
+        "-fcheck=all"
+    ],
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.rulers": [132],
+    "editor.renderWhitespace": "boundary"
+}
