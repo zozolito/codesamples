@@ -1,0 +1,6 @@
+{
+    "recommendations": [
+        "broadcomMFD.cobol-language-support",
+        "ms-vscode.cpptools"
+    ]
+}

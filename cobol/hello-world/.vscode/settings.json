@@ -1,0 +1,13 @@
+{
+    "cobol-lsp.ls.user.cobol.program.files": [
+        "${workspaceFolder}/src/**"
+    ],
+    "files.associations": {
+        "*.cbl": "COBOL",
+        "*.cob": "COBOL",
+        "*.CBL": "COBOL"
+    },
+    "editor.tabSize": 4,
+    "editor.rulers": [7, 11, 72],
+    "editor.renderWhitespace": "boundary"
+}

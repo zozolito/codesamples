@@ -1,0 +1,4 @@
+bin/hello
+bin/hello.exe
+bin/*.exe
+*.o
