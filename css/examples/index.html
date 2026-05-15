@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<!--
+  DOCTYPE: tells the browser this is an HTML5 document.
+  Without it, browsers enter "quirks mode" and behave inconsistently.
+
+  DOCTYPE : indique au navigateur que c'est un document HTML5.
+  Sans lui, les navigateurs entrent en "mode quirks" et se comportent de façon incohérente.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Keywords — Interactive Reference / Référence interactive CSS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       PAGE HEADER
+       ============================================================ -->
+  <header class="page-header">
+    <h1>CSS Keywords — Live Examples</h1>
+    <p class="subtitle">
+      Every keyword demonstrated in context ·
+      Chaque mot-clé démontré en contexte
+    </p>
+    <nav class="toc">
+      <a href="#selectors">Selectors</a>
+      <a href="#box-model">Box Model</a>
+      <a href="#typography">Typography</a>
+      <a href="#colors">Colors</a>
+      <a href="#backgrounds">Backgrounds</a>
+      <a href="#display">Display</a>
+      <a href="#flexbox">Flexbox</a>
+      <a href="#grid">Grid</a>
+      <a href="#positioning">Positioning</a>
+      <a href="#sizing">Sizing</a>
+      <a href="#overflow">Overflow</a>
+      <a href="#transforms">Transforms</a>
+      <a href="#transitions">Transitions</a>
+      <a href="#animations">Animations</a>
+      <a href="#pseudo">Pseudo-classes &amp; elements</a>
+      <a href="#custom-props">Custom Properties</a>
+      <a href="#functions">Functions</a>
+      <a href="#media-queries">Media Queries</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ============================================================
+         SECTION 1 — SELECTORS
+         ============================================================ -->
+    <section id="selectors" class="demo-section">
+      <h2>1 · Selectors / Sélecteurs</h2>
+
+      <!-- Element selector -->
+      <article class="demo-block">
+        <h3>Element selector</h3>
+        <p class="demo-label">Targets every <code>&lt;p&gt;</code> on the page — style.css: <code>p { … }</code></p>
+        <div class="demo-output">
+          <p>I am a paragraph targeted by the <strong>element selector</strong>.</p>
+        </div>
+      </article>
+
+      <!-- Class selector -->
+      <article class="demo-block">
+        <h3>Class selector</h3>
+        <p class="demo-label">Targets elements with <code>class="highlight"</code> — style.css: <code>.highlight { … }</code></p>
+        <div class="demo-output">
+          <p>Normal paragraph.</p>
+          <p class="highlight">Highlighted paragraph — class="highlight".</p>
+          <p>Normal paragraph.</p>
+        </div>
+      </article>
+
+      <!-- ID selector -->
+      <article class="demo-block">
+        <h3>ID selector</h3>
+        <p class="demo-label">Targets the unique element with <code>id="unique-box"</code> — style.css: <code>#unique-box { … }</code></p>
+        <div class="demo-output">
+          <div id="unique-box">I am unique — id="unique-box".</div>
+        </div>
+      </article>
+
+      <!-- Attribute selector -->
+      <article class="demo-block">
+        <h3>Attribute selector</h3>
+        <p class="demo-label"><code>[type="text"]</code>, <code>[href^="https"]</code>, <code>[class*="btn"]</code></p>
+        <div class="demo-output">
+          <input type="text" placeholder='[type="text"] — blue border'>
+          <input type="email" placeholder='[type="email"] — orange border'>
+          <br><br>
+          <a href="https://example.com">[href^="https"] — gets a lock icon via ::before</a>
+        </div>
+      </article>
+
+      <!-- Combinators -->
+      <article class="demo-block">
+        <h3>Combinators</h3>
+        <p class="demo-label">
+          Descendant <code>A B</code> · Child <code>A &gt; B</code> ·
+          Adjacent sibling <code>A + B</code> · General sibling <code>A ~ B</code>
+        </p>
+        <div class="demo-output combinator-demo">
+          <div class="parent">
+            parent
+            <div class="child">child (A &gt; B — direct child)</div>
+            <div class="child">
+              child
+              <span class="grandchild">grandchild (A B — descendant)</span>
+            </div>
+          </div>
+          <p class="adjacent">adjacent sibling of .parent (A + B)</p>
+          <p class="sibling">general sibling of .parent (A ~ B)</p>
+          <p class="sibling">another general sibling (A ~ B)</p>
+        </div>
+      </article>
+
+      <!-- Specificity demo -->
+      <article class="demo-block">
+        <h3>Specificity / Spécificité</h3>
+        <p class="demo-label">Higher specificity always wins, regardless of order.</p>
+        <div class="demo-output specificity-demo">
+          <p class="spec-class" id="spec-id" style="--demo:1">
+            I have an element selector, a class, an ID, <em>and</em> an inline style.<br>
+            Inline style wins (specificity 1-0-0-0 beats 0-1-0-0 beats 0-0-1-0 beats 0-0-0-1).
+          </p>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================
+         SECTION 2 — BOX MODEL
+         ============================================================ -->
+    <section id="box-model" class="demo-section">
+      <h2>2 · Box Model</h2>
+
+      <article class="demo-block">
+        <h3>content · padding · border · margin</h3>
+        <p class="demo-label">
+          <code>box-sizing: content-box</code> (default) vs <code>box-sizing: border-box</code>
+        </p>
+        <div class="demo-output box-model-demo">
+
+          <div class="box content-box-demo">
+            <span>content-box</span>
+            <p>width: 200px adds OUTSIDE padding+border.<br>Total rendered width = 200 + 40 + 4 = <strong>244px</strong></p>
+          </div>
+
+          <div class="box border-box-demo">
+            <span>border-box</span>
+            <p>width: 200px INCLUDES padding+border.<br>Total rendered width = <strong>200px</strong> exactly.</p>
+          </div>
+
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>Margin collapse</h3>
+        <p class="demo-label">
+          Adjacent vertical margins collapse to the larger of the two.
+          They do <strong>not</strong> add up.
+        </p>
+        <div class="demo-output margin-collapse-demo">
+          <div class="collapse-box">margin-bottom: 30px</div>
+          <div class="collapse-box">margin-top: 20px — gap above is 30px, not 50px.</div>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>outline vs border</h3>
+        <p class="demo-label">
+          <code>outline</code> does not affect layout (no space reserved).
+          <code>border</code> is part of the box model.
+        </p>
+        <div class="demo-output outline-demo">
+          <button class="outline-btn">Focus me (Tab key) — outline appears, no layout shift</button>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================
+         SECTION 3 — TYPOGRAPHY
+         ============================================================ -->
+    <section id="typography" class="demo-section">
+      <h2>3 · Typography / Typographie</h2>
+
+      <article class="demo-block">
+        <h3>font-family · font-size · font-weight · font-style</h3>
+        <div class="demo-output typography-demo">
+          <p class="typo-serif">font-family: Georgia, serif — weight 400, style normal</p>
+          <p class="typo-mono">font-family: 'Courier New', monospace — for code</p>
+          <p class="typo-bold">font-weight: bold (700)</p>
+          <p class="typo-light">font-weight: 300 (light)</p>
+          <p class="typo-italic">font-style: italic</p>
+          <p class="typo-oblique">font-style: oblique 20deg</p>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>line-height · letter-spacing · word-spacing · text-align</h3>
+        <div class="demo-output spacing-demo">
+          <p class="line-height-demo">
+            line-height: 2 — this paragraph has generous line spacing so the text
+            breathes and is easier to read, especially in long-form content.
+          </p>
+          <p class="letter-spacing-demo">letter-spacing: 0.2em — S P A C E D</p>
+          <p class="word-spacing-demo">word-spacing: 1em — words far apart</p>
+          <p class="text-align-center">text-align: center</p>
+          <p class="text-align-justify">
+            text-align: justify — the browser stretches spaces so both edges
+            are flush against the container. Works best with longer lines of text
+            that have enough words to distribute.
+          </p>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>text-decoration · text-transform · text-shadow · white-space</h3>
+        <div class="demo-output decoration-demo">
+          <p class="underline-demo">text-decoration: underline wavy red</p>
+          <p class="line-through-demo">text-decoration: line-through</p>
+          <p class="uppercase-demo">text-transform: uppercase</p>
+          <p class="capitalize-demo">text-transform: capitalize — every first letter</p>
+          <p class="text-shadow-demo">text-shadow: 2px 2px 4px rgba(0,0,0,0.5)</p>
+          <p class="white-space-demo">white-space: nowrap — this long line will NOT wrap even if the container is narrow, causing horizontal scroll instead</p>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>Fluid typography with <code>clamp()</code></h3>
+        <p class="demo-label">Resize the window — the font size scales between 1rem and 2.5rem.</p>
+        <div class="demo-output">
+          <p class="fluid-type">
+            font-size: clamp(1rem, 2.5vw + 0.5rem, 2.5rem)
+          </p>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================
+         SECTION 4 — COLORS
+         ============================================================ -->
+    <section id="colors" class="demo-section">
+      <h2>4 · Colors / Couleurs</h2>
+
+      <article class="demo-block">
+        <h3>color · opacity · Named · hex · rgb · hsl · oklch</h3>
+        <div class="demo-output color-demo">
+          <div class="color-swatch named">named: <code>tomato</code></div>
+          <div class="color-swatch hex">#3B82F6 (hex)</div>
+          <div class="color-swatch rgb">rgb(59, 130, 246)</div>
+          <div class="color-swatch rgba">rgba(59, 130, 246, 0.5) — semi-transparent</div>
+          <div class="color-swatch hsl">hsl(217, 91%, 60%)</div>
+          <div class="color-swatch hsla">hsla(217, 91%, 60%, 0.6)</div>
+          <div class="color-swatch oklch">oklch(60% 0.18 250) — perceptually uniform</div>
+          <div class="color-swatch currentcolor">
+            color: purple → border uses <code>currentColor</code>
+          </div>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>opacity vs rgba alpha</h3>
+        <p class="demo-label">
+          <code>opacity</code> affects the element AND all its children.
+          <code>rgba()</code> alpha affects only the background.
+        </p>
+        <div class="demo-output opacity-demo">
+          <div class="opacity-box">
+            opacity: 0.4 — text inside is also faded
+            <span>child text</span>
+          </div>
+          <div class="rgba-box">
+            background: rgba — text inside stays fully opaque
+            <span>child text</span>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================
+         SECTION 5 — BACKGROUNDS
+         ============================================================ -->
+    <section id="backgrounds" class="demo-section">
+      <h2>5 · Backgrounds / Arrière-plans</h2>
+
+      <article class="demo-block">
+        <h3>background-color · background-image · background-size · background-position · background-repeat</h3>
+        <div class="demo-output bg-demo">
+          <div class="bg-color">background-color: #f0abfc</div>
+          <div class="bg-repeat">background-image with repeat (default)</div>
+          <div class="bg-no-repeat">background-image, no-repeat, center center</div>
+          <div class="bg-cover">background-size: cover — fills the box, may crop</div>
+          <div class="bg-contain">background-size: contain — fits entirely, may leave gaps</div>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>Gradients</h3>
+        <div class="demo-output gradient-demo">
+          <div class="grad-linear">linear-gradient(135deg, #667eea, #764ba2)</div>
+          <div class="grad-radial">radial-gradient(circle, #f093fb, #f5576c)</div>
+          <div class="grad-conic">conic-gradient(from 0deg, red, yellow, green, blue, red)</div>
+          <div class="grad-repeating">repeating-linear-gradient(45deg, #000 0 5px, #fff 5px 10px)</div>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>background-attachment · background-blend-mode · background-clip</h3>
+        <div class="demo-output">
+          <div class="bg-clip-text">background-clip: text — gradient shows through text</div>
+          <div class="bg-blend">background-blend-mode: multiply</div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================
+         SECTION 6 — DISPLAY & VISIBILITY
+         ============================================================ -->
+    <section id="display" class="demo-section">
+      <h2>6 · Display &amp; Visibility</h2>
+
+      <article class="demo-block">
+        <h3>display values</h3>
+        <p class="demo-label">
+          <code>block</code> takes full width. <code>inline</code> flows with text.
+          <code>inline-block</code> is inline but accepts width/height.
+          <code>none</code> removes from layout entirely.
+        </p>
+        <div class="demo-output display-demo">
+          <span class="d-block">display: block — takes full row</span>
+          <span class="d-inline">inline</span>
+          <span class="d-inline"> inline</span>
+          <span class="d-inline"> inline — all on one line</span>
+          <br>
+          <span class="d-inline-block">inline-block 80px</span>
+          <span class="d-inline-block">inline-block 80px</span>
+          <span class="d-inline-block">inline-block 80px</span>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>visibility: hidden vs display: none</h3>
+        <div class="demo-output visibility-demo">
+          <div class="vis-visible">visibility: visible — normal</div>
+          <div class="vis-hidden">visibility: hidden — INVISIBLE but space preserved</div>
+          <div class="vis-visible">↑ there is a hidden box above this line</div>
+          <div class="vis-none">display: none — removed entirely from layout</div>
+          <div class="vis-visible">↑ no gap here — display:none box is gone</div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================
+         SECTION 7 — FLEXBOX
+         ============================================================ -->
+    <section id="flexbox" class="demo-section">
+      <h2>7 · Flexbox</h2>
+      <p class="section-intro">
+        Flexbox is a <strong>1-dimensional</strong> layout model (row OR column at a time).
+        Apply <code>display: flex</code> to the container; children become flex items.
+      </p>
+
+      <article class="demo-block">
+        <h3>flex-direction</h3>
+        <div class="demo-output">
+          <p class="demo-label">row (default)</p>
+          <div class="flex-demo flex-row">
+            <div class="flex-item">A</div>
+            <div class="flex-item">B</div>
+            <div class="flex-item">C</div>
+          </div>
+          <p class="demo-label">column</p>
+          <div class="flex-demo flex-col">
+            <div class="flex-item">A</div>
+            <div class="flex-item">B</div>
+            <div class="flex-item">C</div>
+          </div>
+          <p class="demo-label">row-reverse</p>
+          <div class="flex-demo flex-row-reverse">
+            <div class="flex-item">A</div>
+            <div class="flex-item">B</div>
+            <div class="flex-item">C</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>justify-content (main axis)</h3>
+        <div class="demo-output">
+          <p class="demo-label">flex-start</p>
+          <div class="flex-demo jc-start"><div class="flex-item">A</div><div class="flex-item">B</div><div class="flex-item">C</div></div>
+
+          <p class="demo-label">flex-end</p>
+          <div class="flex-demo jc-end"><div class="flex-item">A</div><div class="flex-item">B</div><div class="flex-item">C</div></div>
+
+          <p class="demo-label">center</p>
+          <div class="flex-demo jc-center"><div class="flex-item">A</div><div class="flex-item">B</div><div class="flex-item">C</div></div>
+
+          <p class="demo-label">space-between</p>
+          <div class="flex-demo jc-between"><div class="flex-item">A</div><div class="flex-item">B</div><div class="flex-item">C</div></div>
+
+          <p class="demo-label">space-around</p>
+          <div class="flex-demo jc-around"><div class="flex-item">A</div><div class="flex-item">B</div><div class="flex-item">C</div></div>
+
+          <p class="demo-label">space-evenly</p>
+          <div class="flex-demo jc-evenly"><div class="flex-item">A</div><div class="flex-item">B</div><div class="flex-item">C</div></div>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>align-items (cross axis)</h3>
+        <div class="demo-output">
+          <p class="demo-label">stretch (default) · center · flex-start · flex-end · baseline</p>
+          <div class="flex-demo ai-demo">
+            <div class="flex-item ai-stretch">stretch</div>
+            <div class="flex-item ai-tall">tall</div>
+            <div class="flex-item ai-stretch">stretch</div>
+          </div>
+          <div class="flex-demo ai-center">
+            <div class="flex-item">A</div>
+            <div class="flex-item ai-tall">tall</div>
+            <div class="flex-item">C</div>
+          </div>
+          <div class="flex-demo ai-baseline">
+            <div class="flex-item" style="font-size:2rem">Big</div>
+            <div class="flex-item" style="font-size:0.8rem">small</div>
+            <div class="flex-item">normal — all baselines aligned</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>flex-wrap · flex-grow · flex-shrink · flex-basis · order</h3>
+        <div class="demo-output">
+          <p class="demo-label">flex-wrap: wrap — items wrap to next line when they don't fit</p>
+          <div class="flex-demo flex-wrap-demo">
+            <div class="flex-item wrap-item">flex-basis: 120px</div>
+            <div class="flex-item wrap-item">flex-basis: 120px</div>
+            <div class="flex-item wrap-item">flex-basis: 120px</div>
+            <div class="flex-item wrap-item">flex-basis: 120px</div>
+            <div class="flex-item wrap-item">flex-basis: 120px</div>
+            <div class="flex-item wrap-item">flex-basis: 120px</div>
+          </div>
+
+          <p class="demo-label">flex-grow: item B grows to fill remaining space</p>
+          <div class="flex-demo grow-demo">
+            <div class="flex-item">A (no grow)</div>
+            <div class="flex-item grow-item">B (flex-grow: 1)</div>
+            <div class="flex-item">C (no grow)</div>
+          </div>
+
+          <p class="demo-label">order: visual order independent of HTML order</p>
+          <div class="flex-demo order-demo">
+            <div class="flex-item order-3">HTML 1st · order: 3</div>
+            <div class="flex-item order-1">HTML 2nd · order: 1</div>
+            <div class="flex-item order-2">HTML 3rd · order: 2</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>gap (flex-gap)</h3>
+        <p class="demo-label"><code>gap</code> replaces the old margin-hack for spacing flex items.</p>
+        <div class="demo-output">
+          <div class="flex-demo gap-demo">
+            <div class="flex-item">A</div>
+            <div class="flex-item">B</div>
+            <div class="flex-item">C</div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================
+         SECTION 8 — CSS GRID
+         ============================================================ -->
+    <section id="grid" class="demo-section">
+      <h2>8 · CSS Grid</h2>
+      <p class="section-intro">
+        Grid is a <strong>2-dimensional</strong> layout model (rows AND columns simultaneously).
+        Apply <code>display: grid</code> to the container.
+      </p>
+
+      <article class="demo-block">
+        <h3>grid-template-columns · grid-template-rows · fr unit</h3>
+        <p class="demo-label">
+          <code>fr</code> = fractional unit of remaining space.
+          <code>1fr 2fr 1fr</code> → 25% / 50% / 25%.
+        </p>
+        <div class="demo-output">
+          <div class="grid-demo grid-3col">
+            <div class="grid-item">1fr</div>
+            <div class="grid-item">2fr</div>
+            <div class="grid-item">1fr</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>grid-column · grid-row (spanning)</h3>
+        <p class="demo-label">Items can span multiple columns or rows.</p>
+        <div class="demo-output">
+          <div class="grid-demo grid-span-demo">
+            <div class="grid-item span-col-2">col-span 2</div>
+            <div class="grid-item">1×1</div>
+            <div class="grid-item span-row-2">row-span 2</div>
+            <div class="grid-item">1×1</div>
+            <div class="grid-item">1×1</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>grid-template-areas — named areas</h3>
+        <p class="demo-label">Place items by name instead of line numbers.</p>
+        <div class="demo-output">
+          <div class="grid-demo grid-areas-demo">
+            <header class="grid-item area-header">header</header>
+            <nav    class="grid-item area-nav">nav</nav>
+            <main   class="grid-item area-main">main</main>
+            <aside  class="grid-item area-aside">aside</aside>
+            <footer class="grid-item area-footer">footer</footer>
+          </div>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>repeat() · minmax() · auto-fill · auto-fit</h3>
+        <p class="demo-label">
+          <code>repeat(auto-fill, minmax(120px, 1fr))</code> creates as many columns as fit,
+          each at least 120px wide — no media queries needed.
+        </p>
+        <div class="demo-output">
+          <div class="grid-demo grid-auto-fill">
+            <div class="grid-item">A</div>
+            <div class="grid-item">B</div>
+            <div class="grid-item">C</div>
+            <div class="grid-item">D</div>
+            <div class="grid-item">E</div>
+            <div class="grid-item">F</div>
+            <div class="grid-item">G</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>place-items · place-content · justify-items · align-items</h3>
+        <div class="demo-output">
+          <p class="demo-label">place-items: center center — each cell's content is centered</p>
+          <div class="grid-demo grid-place-demo">
+            <div class="grid-item">short</div>
+            <div class="grid-item">a bit longer</div>
+            <div class="grid-item">ok</div>
+            <div class="grid-item">centered</div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================
+         SECTION 9 — POSITIONING
+         ============================================================ -->
+    <section id="positioning" class="demo-section">
+      <h2>9 · Positioning / Positionnement</h2>
+
+      <article class="demo-block">
+        <h3>position: static (default)</h3>
+        <p class="demo-label">Normal flow. <code>top/left/right/bottom</code> have no effect.</p>
+        <div class="demo-output pos-demo">
+          <div class="pos-box pos-static">static — in normal flow</div>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>position: relative</h3>
+        <p class="demo-label">
+          Offset from <em>its own normal position</em>.
+          Original space is still reserved.
+        </p>
+        <div class="demo-output pos-demo">
+          <div class="pos-box">before</div>
+          <div class="pos-box pos-relative">relative — top: 20px; left: 30px</div>
+          <div class="pos-box">after — gap above is where relative box started</div>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>position: absolute</h3>
+        <p class="demo-label">
+          Removed from normal flow. Positioned relative to the nearest
+          <strong>positioned ancestor</strong> (<code>position ≠ static</code>).
+        </p>
+        <div class="demo-output pos-demo pos-absolute-container">
+          <p>This container has <code>position: relative</code>.</p>
+          <div class="pos-box pos-absolute">absolute — top:0; right:0</div>
+          <p>The paragraph below is unaffected by the absolute box.</p>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>position: fixed</h3>
+        <p class="demo-label">
+          Removed from flow. Positioned relative to the <strong>viewport</strong>.
+          Stays in place when you scroll.
+          <em>(The orange badge at the bottom-right of the page is fixed.)</em>
+        </p>
+      </article>
+
+      <article class="demo-block">
+        <h3>position: sticky</h3>
+        <p class="demo-label">
+          Behaves like <code>relative</code> until it hits a scroll threshold,
+          then sticks like <code>fixed</code>. The section headings on this page use sticky.
+        </p>
+        <div class="demo-output sticky-demo">
+          <div class="sticky-header">Sticky header — scroll inside this box</div>
+          <p>Line 1</p><p>Line 2</p><p>Line 3</p><p>Line 4</p>
+          <p>Line 5</p><p>Line 6</p><p>Line 7</p><p>Line 8</p>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>z-index</h3>
+        <p class="demo-label">
+          Controls stacking order among positioned elements.
+          Higher <code>z-index</code> is in front.
+          Only works on positioned elements (<code>position ≠ static</code>).
+        </p>
+        <div class="demo-output z-demo">
+          <div class="z-box z-low">z-index: 1 (behind)</div>
+          <div class="z-box z-mid">z-index: 2</div>
+          <div class="z-box z-high">z-index: 3 (front)</div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================
+         SECTION 10 — SIZING
+         ============================================================ -->
+    <section id="sizing" class="demo-section">
+      <h2>10 · Sizing / Dimensionnement</h2>
+
+      <article class="demo-block">
+        <h3>width · height · min-* · max-* · aspect-ratio</h3>
+        <div class="demo-output sizing-demo">
+          <div class="size-box fixed-size">width: 200px; height: 60px — fixed</div>
+          <div class="size-box percent-size">width: 50% of parent</div>
+          <div class="size-box min-max-size">min-width: 100px; max-width: 300px — resize window</div>
+          <div class="size-box aspect-ratio-box">aspect-ratio: 16/9 — width: 100%</div>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>object-fit · object-position</h3>
+        <p class="demo-label">Controls how an <code>&lt;img&gt;</code> or <code>&lt;video&gt;</code> fills its container.</p>
+        <div class="demo-output object-fit-demo">
+          <figure>
+            <figcaption>object-fit: fill (default — stretches)</figcaption>
+            <img class="obj-fill" src="https://picsum.photos/seed/css1/400/200" alt="demo">
+          </figure>
+          <figure>
+            <figcaption>object-fit: cover (crops)</figcaption>
+            <img class="obj-cover" src="https://picsum.photos/seed/css1/400/200" alt="demo">
+          </figure>
+          <figure>
+            <figcaption>object-fit: contain (letterbox)</figcaption>
+            <img class="obj-contain" src="https://picsum.photos/seed/css1/400/200" alt="demo">
+          </figure>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================
+         SECTION 11 — OVERFLOW
+         ============================================================ -->
+    <section id="overflow" class="demo-section">
+      <h2>11 · Overflow</h2>
+
+      <article class="demo-block">
+        <h3>overflow: visible · hidden · scroll · auto · clip</h3>
+        <div class="demo-output overflow-demo">
+          <div class="ov-box ov-visible">
+            <strong>visible (default)</strong> — content escapes the box. The text goes beyond the border and overlaps neighbouring elements.
+          </div>
+          <div class="ov-box ov-hidden">
+            <strong>hidden</strong> — overflowing content is clipped and invisible. This text is cut off at the box edge.
+          </div>
+          <div class="ov-box ov-scroll">
+            <strong>scroll</strong> — scrollbar always shown (even if not needed).
+            This text is very long intentionally to demonstrate the scrollbar behaviour. Keep reading...
+          </div>
+          <div class="ov-box ov-auto">
+            <strong>auto</strong> — scrollbar appears only when needed.
+            This text is very long intentionally to demonstrate the auto scrollbar. Keep reading...
+          </div>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>text-overflow: ellipsis</h3>
+        <p class="demo-label">Truncates text with "…" — requires <code>overflow: hidden</code> and <code>white-space: nowrap</code>.</p>
+        <div class="demo-output">
+          <p class="ellipsis-demo">This is a very long line of text that will be truncated with an ellipsis because it doesn't fit in one line.</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================
+         SECTION 12 — TRANSFORMS
+         ============================================================ -->
+    <section id="transforms" class="demo-section">
+      <h2>12 · Transforms</h2>
+      <p class="section-intro">
+        <code>transform</code> moves, rotates, scales, and skews without affecting layout.
+        The original space is preserved (other elements don't move).
+      </p>
+
+      <article class="demo-block">
+        <h3>translate · rotate · scale · skew · matrix</h3>
+        <div class="demo-output transform-demo">
+          <div class="tf-box tf-original">original</div>
+          <div class="tf-box tf-translate">translate(30px, 20px)</div>
+          <div class="tf-box tf-rotate">rotate(15deg)</div>
+          <div class="tf-box tf-scale">scale(1.3)</div>
+          <div class="tf-box tf-skew">skewX(20deg)</div>
+          <div class="tf-box tf-combined">translate + rotate + scale</div>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>transform-origin</h3>
+        <p class="demo-label">Default is <code>50% 50%</code> (center). Change it to rotate from a corner.</p>
+        <div class="demo-output transform-origin-demo">
+          <div class="origin-box origin-center">origin: center</div>
+          <div class="origin-box origin-top-left">origin: top left</div>
+          <div class="origin-box origin-bottom-right">origin: bottom right</div>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>3D transforms — perspective · rotateX · rotateY · rotateZ</h3>
+        <div class="demo-output perspective-demo">
+          <div class="perspective-container">
+            <div class="tf-3d-box">rotateY(45deg) with perspective</div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================
+         SECTION 13 — TRANSITIONS
+         ============================================================ -->
+    <section id="transitions" class="demo-section">
+      <h2>13 · Transitions</h2>
+      <p class="section-intro">
+        <code>transition</code> animates a CSS property change smoothly over time.
+        Syntax: <code>transition: property duration timing-function delay</code>
+      </p>
+
+      <article class="demo-block">
+        <h3>transition-property · transition-duration · transition-timing-function · transition-delay</h3>
+        <p class="demo-label">Hover each button to see different easing functions.</p>
+        <div class="demo-output transition-demo">
+          <button class="tr-btn tr-linear">linear — constant speed</button>
+          <button class="tr-btn tr-ease">ease — slow→fast→slow (default)</button>
+          <button class="tr-btn tr-ease-in">ease-in — starts slow</button>
+          <button class="tr-btn tr-ease-out">ease-out — ends slow</button>
+          <button class="tr-btn tr-ease-in-out">ease-in-out</button>
+          <button class="tr-btn tr-cubic">cubic-bezier — custom</button>
+          <button class="tr-btn tr-delay">0.3s delay before starting</button>
+          <button class="tr-btn tr-steps">steps(4) — discrete jumps</button>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>transition: all — animating multiple properties</h3>
+        <p class="demo-label">Hover the card to animate background, color, transform, and box-shadow simultaneously.</p>
+        <div class="demo-output">
+          <div class="tr-card">Hover me — transition: all 0.4s ease</div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================
+         SECTION 14 — ANIMATIONS
+         ============================================================ -->
+    <section id="animations" class="demo-section">
+      <h2>14 · Animations &amp; @keyframes</h2>
+      <p class="section-intro">
+        Unlike transitions (triggered by state change), animations run automatically
+        and can loop, reverse, and pause.
+      </p>
+
+      <article class="demo-block">
+        <h3>@keyframes · animation-name · animation-duration · animation-iteration-count · animation-direction</h3>
+        <div class="demo-output anim-demo">
+          <div class="anim-box anim-pulse">pulse (ease, infinite, alternate)</div>
+          <div class="anim-box anim-spin">spin (linear, infinite)</div>
+          <div class="anim-box anim-bounce">bounce (ease-in-out, infinite, alternate)</div>
+          <div class="anim-box anim-slide">slide-in (ease-out, 1 time)</div>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>animation-fill-mode · animation-play-state · animation-delay</h3>
+        <div class="demo-output">
+          <p class="demo-label">Hover to pause.</p>
+          <div class="anim-box anim-pausable">hover to pause — animation-play-state: paused on :hover</div>
+
+          <p class="demo-label">fill-mode: forwards — stays at final keyframe position after ending</p>
+          <div class="anim-box anim-forwards">animation-fill-mode: forwards</div>
+
+          <p class="demo-label">Staggered delays with animation-delay</p>
+          <div class="stagger-demo">
+            <div class="stagger-item" style="animation-delay: 0s">A</div>
+            <div class="stagger-item" style="animation-delay: 0.15s">B</div>
+            <div class="stagger-item" style="animation-delay: 0.3s">C</div>
+            <div class="stagger-item" style="animation-delay: 0.45s">D</div>
+            <div class="stagger-item" style="animation-delay: 0.6s">E</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>prefers-reduced-motion</h3>
+        <p class="demo-label">
+          Respect the user's OS "Reduce Motion" setting.
+          Enable it in your system preferences to see animations stop.
+        </p>
+        <div class="demo-output">
+          <div class="anim-box anim-respect-motion">respects prefers-reduced-motion</div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================
+         SECTION 15 — PSEUDO-CLASSES & PSEUDO-ELEMENTS
+         ============================================================ -->
+    <section id="pseudo" class="demo-section">
+      <h2>15 · Pseudo-classes &amp; Pseudo-elements</h2>
+
+      <article class="demo-block">
+        <h3>:hover · :focus · :active · :visited</h3>
+        <div class="demo-output pseudo-interaction">
+          <a href="#pseudo" class="pseudo-link">Link — try hover, click, focus (Tab)</a>
+          <br><br>
+          <button class="pseudo-btn">Button — :hover scales, :active shrinks</button>
+          <br><br>
+          <input class="pseudo-input" type="text" placeholder=":focus highlights border">
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>:nth-child · :first-child · :last-child · :only-child</h3>
+        <div class="demo-output nth-demo">
+          <ul>
+            <li>1st — :first-child (blue)</li>
+            <li>2nd — :nth-child(2) (orange)</li>
+            <li>3rd</li>
+            <li>4th — :nth-child(even) (light grey)</li>
+            <li>5th — :nth-child(odd) (white)</li>
+            <li>6th — :nth-child(even) (light grey)</li>
+            <li>7th</li>
+            <li>8th — :last-child (red)</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>:not() · :is() · :where() · :has()</h3>
+        <div class="demo-output not-demo">
+          <p class="not-p">Normal paragraph — <code>:not(.special)</code> applies</p>
+          <p class="not-p special">Special paragraph — excluded from :not(.special)</p>
+          <p class="not-p">Normal paragraph — <code>:not(.special)</code> applies</p>
+
+          <p class="demo-label" style="margin-top:1rem">:has() — parent selected when it contains a checked checkbox</p>
+          <label class="has-demo">
+            <input type="checkbox"> Check me — the label gets a green background via :has(:checked)
+          </label>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>:disabled · :checked · :required · :valid · :invalid · :placeholder-shown</h3>
+        <div class="demo-output form-state-demo">
+          <input type="text"  class="form-input" placeholder="required field" required>
+          <input type="email" class="form-input" placeholder="email — validates on input" value="bad@">
+          <input type="text"  class="form-input" placeholder="normal field">
+          <input type="text"  class="form-input" disabled value="disabled field">
+          <label><input type="checkbox" class="checkbox-demo"> :checked changes the label</label>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>::before · ::after · ::first-line · ::first-letter · ::selection · ::placeholder</h3>
+        <div class="demo-output pseudo-el-demo">
+          <div class="before-after">
+            ::before adds a star · ::after adds an arrow →
+          </div>
+          <p class="first-line-demo">
+            ::first-line is styled differently — only the first rendered line is targeted,
+            regardless of where the line breaks in your HTML source.
+          </p>
+          <p class="first-letter-demo">
+            ::first-letter creates a drop cap. This paragraph starts with a large,
+            styled letter that spans multiple lines.
+          </p>
+          <p class="selection-demo">Select this text — ::selection changes highlight color</p>
+          <input type="text" class="placeholder-demo" placeholder="::placeholder — styled grey italic">
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================
+         SECTION 16 — CUSTOM PROPERTIES (CSS VARIABLES)
+         ============================================================ -->
+    <section id="custom-props" class="demo-section">
+      <h2>16 · Custom Properties (CSS Variables)</h2>
+      <p class="section-intro">
+        Defined with <code>--name: value</code> on any element (usually <code>:root</code>).
+        Read with <code>var(--name, fallback)</code>.
+        They cascade and inherit like any other property.
+      </p>
+
+      <article class="demo-block">
+        <h3>Defining and using variables</h3>
+        <div class="demo-output custom-props-demo">
+          <div class="cp-box primary">--color-primary (defined on :root)</div>
+          <div class="cp-box secondary">--color-secondary</div>
+          <div class="cp-box scoped">
+            <p>Scoped variable: this container redefines <code>--color-primary</code> locally.</p>
+            <div class="cp-inner">Inner box uses scoped --color-primary</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>Dark mode with custom properties</h3>
+        <p class="demo-label">
+          <code>@media (prefers-color-scheme: dark)</code> swaps the token values.
+          No class toggling needed.
+        </p>
+        <div class="demo-output dark-mode-demo">
+          <div class="dark-card">
+            <p>This card uses <code>--surface</code> and <code>--on-surface</code> tokens.<br>
+            Enable dark mode in your OS to see them flip automatically.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>var() fallback</h3>
+        <p class="demo-label"><code>var(--undefined-var, hotpink)</code> — fallback activates when variable is not set.</p>
+        <div class="demo-output">
+          <div class="cp-fallback">Background is hotpink (fallback) because --undefined-var is not defined</div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================
+         SECTION 17 — CSS FUNCTIONS
+         ============================================================ -->
+    <section id="functions" class="demo-section">
+      <h2>17 · CSS Functions</h2>
+
+      <article class="demo-block">
+        <h3>calc() — arithmetic in CSS</h3>
+        <p class="demo-label">Mix units: <code>calc(100% - 2rem)</code> — dynamic math.</p>
+        <div class="demo-output">
+          <div class="calc-box">width: calc(100% - 60px) — fills container minus 60px</div>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>min() · max() · clamp()</h3>
+        <div class="demo-output minmax-demo">
+          <div class="fn-box fn-min">width: min(80%, 400px) — whichever is smaller</div>
+          <div class="fn-box fn-max">width: max(200px, 40%) — whichever is larger</div>
+          <div class="fn-box fn-clamp">width: clamp(150px, 50%, 400px) — resize to see</div>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>counter() · counters() — CSS-only numbering</h3>
+        <p class="demo-label">Automatic numbering without JavaScript.</p>
+        <div class="demo-output counter-demo">
+          <ol class="css-counter-list">
+            <li>First item</li>
+            <li>Second item
+              <ol>
+                <li>Nested A</li>
+                <li>Nested B</li>
+              </ol>
+            </li>
+            <li>Third item</li>
+          </ol>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>env() — environment variables (safe areas)</h3>
+        <p class="demo-label">
+          <code>env(safe-area-inset-bottom)</code> — critical for notched phones (iPhone X+).
+          Prevents content from hiding under the home indicator.
+        </p>
+        <div class="demo-output">
+          <code>padding-bottom: env(safe-area-inset-bottom, 1rem)</code> — fallback 1rem on desktop
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================
+         SECTION 18 — MEDIA QUERIES
+         ============================================================ -->
+    <section id="media-queries" class="demo-section">
+      <h2>18 · Media Queries</h2>
+      <p class="section-intro">
+        <strong>Mobile-first</strong>: write base styles for small screens,
+        then use <code>min-width</code> breakpoints to add complexity for larger screens.
+      </p>
+
+      <article class="demo-block">
+        <h3>Breakpoint demo — resize your browser</h3>
+        <div class="demo-output">
+          <div class="breakpoint-indicator">
+            <span class="bp-xs">📱 &lt; 480px — mobile</span>
+            <span class="bp-sm">📱 ≥ 480px — large phone</span>
+            <span class="bp-md">💻 ≥ 768px — tablet</span>
+            <span class="bp-lg">🖥️ ≥ 1024px — desktop</span>
+            <span class="bp-xl">🖥️ ≥ 1280px — wide desktop</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>Responsive layout — mobile-first grid</h3>
+        <div class="demo-output">
+          <div class="responsive-grid">
+            <div class="rg-item">A</div>
+            <div class="rg-item">B</div>
+            <div class="rg-item">C</div>
+            <div class="rg-item">D</div>
+          </div>
+          <p class="demo-label">1 col on mobile · 2 cols on tablet · 4 cols on desktop</p>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>@media (prefers-color-scheme) · @media (prefers-reduced-motion) · @media print</h3>
+        <div class="demo-output">
+          <div class="mq-feature-demo">
+            <span class="mq-dark-mode">dark mode active 🌙 (switch your OS)</span>
+            <span class="mq-light-mode">light mode active ☀️</span>
+          </div>
+          <p><em>Try Ctrl+P / Cmd+P — print styles hide the nav and adjust colors.</em></p>
+        </div>
+      </article>
+
+      <article class="demo-block">
+        <h3>@container — container queries</h3>
+        <p class="demo-label">
+          Component responds to <em>its parent's size</em>, not the viewport.
+          Resize by dragging the handle below.
+        </p>
+        <div class="demo-output">
+          <div class="cq-wrapper" style="resize:horizontal; overflow:hidden; min-width:150px; max-width:100%;">
+            <div class="cq-card">
+              <div class="cq-image">img</div>
+              <div class="cq-text">
+                <strong>Container Query Card</strong>
+                <p>Drag the wrapper to resize. The layout changes based on the container width — not the viewport.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+  </main>
+
+  <!-- Fixed badge — demonstrates position: fixed -->
+  <a href="#" class="fixed-badge">↑ Top</a>
+
+  <footer class="page-footer">
+    <p>
+      CSS Keywords — CodeSamples Project ·
+      <a href="../Reference.md">Reference.md</a> ·
+      <a href="https://www.w3schools.com/cssref/index.php">W3Schools CSS Reference</a>
+    </p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,2108 @@
+/* =============================================================
+   CSS KEYWORDS — LIVE EXAMPLES
+   css/examples/style.css
+   CodeSamples Project · github.com/t-orbeck/codesamples
+
+   Every rule is annotated: what the keyword does and why you'd
+   use it. Read top-to-bottom; sections match the HTML.
+   ============================================================= */
+
+
+/* =============================================================
+   0 · CUSTOM PROPERTIES (DESIGN TOKENS)
+   Defined on :root so they're available everywhere in the page.
+   :root is the <html> element — the highest-scope selector.
+   ============================================================= */
+
+:root {
+  /* Color tokens */
+  --color-primary:    #3b82f6;   /* blue-500 */
+  --color-secondary:  #8b5cf6;   /* violet-500 */
+  --color-accent:     #f59e0b;   /* amber-500 */
+  --color-danger:     #ef4444;   /* red-500 */
+  --color-success:    #10b981;   /* emerald-500 */
+
+  /* Surface tokens — swapped in dark mode */
+  --surface:          #ffffff;
+  --surface-2:        #f8fafc;
+  --surface-3:        #f1f5f9;
+  --on-surface:       #0f172a;
+  --on-surface-muted: #64748b;
+  --border-color:     #e2e8f0;
+
+  /* Spacing scale */
+  --space-xs:  0.25rem;
+  --space-sm:  0.5rem;
+  --space-md:  1rem;
+  --space-lg:  1.5rem;
+  --space-xl:  2rem;
+  --space-2xl: 3rem;
+
+  /* Typography */
+  --font-sans: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Courier New', Courier, monospace;
+  --radius:    0.5rem;
+  --shadow:    0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Dark mode — overrides the surface/text tokens only.
+   The rest of the design system stays identical.
+   prefers-color-scheme is a media feature (not a class toggle). */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface:          #0f172a;
+    --surface-2:        #1e293b;
+    --surface-3:        #334155;
+    --on-surface:       #f1f5f9;
+    --on-surface-muted: #94a3b8;
+    --border-color:     #334155;
+    --shadow:           0 2px 8px rgba(0, 0, 0, 0.4);
+  }
+}
+
+
+/* =============================================================
+   1 · UNIVERSAL RESET
+   The * selector targets every element on the page.
+   box-sizing: border-box makes width/height include padding and
+   border — the only sane default for layout work.
+   ============================================================= */
+
+*,
+*::before,
+*::after {
+  /* box-sizing: border-box — width/height include padding + border.
+     Without this, adding padding to a 200px box makes it 240px. */
+  box-sizing: border-box;
+
+  /* margin: 0; padding: 0 — remove browser default spacing so
+     we control all whitespace explicitly. */
+  margin: 0;
+  padding: 0;
+}
+
+
+/* =============================================================
+   2 · BASE DOCUMENT STYLES
+   ============================================================= */
+
+body {
+  /* font-family — ordered list of fonts; first available wins.
+     system-ui picks the native OS font (San Francisco, Segoe UI…) */
+  font-family: var(--font-sans);
+
+  /* font-size — base size. All rem units are relative to this.
+     16px is the browser default; we keep it. */
+  font-size: 1rem;
+
+  /* line-height: 1.6 — unitless value multiplied by font-size.
+     1.6 × 16px = 25.6px. Unitless preferred so children inherit
+     the multiplier, not a fixed px value. */
+  line-height: 1.6;
+
+  /* color — the foreground/text color. */
+  color: var(--on-surface);
+
+  /* background-color — page background. */
+  background-color: var(--surface);
+
+  /* transition — smooth color swap when OS switches dark/light mode. */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* =============================================================
+   3 · ELEMENT SELECTORS
+   Targets every instance of that HTML tag.
+   ============================================================= */
+
+p {
+  /* margin-bottom — space below every paragraph. */
+  margin-bottom: var(--space-md);
+  max-width: 70ch; /* ch = width of the "0" glyph; ~70 chars/line is optimal for reading */
+}
+
+a {
+  /* color: inherit — link uses whatever color its parent has. */
+  color: var(--color-primary);
+
+  /* text-decoration — underlines, overlines, line-through.
+     Values: none | underline | overline | line-through */
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;     /* em is relative to the element's own font-size */
+  background: var(--surface-3);
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+  color: var(--color-secondary);
+}
+
+strong {
+  font-weight: 700;       /* bold */
+}
+
+em {
+  font-style: italic;
+}
+
+h1, h2, h3 {
+  /* line-height: 1.2 — tighter than body text; headings are short */
+  line-height: 1.2;
+  color: var(--on-surface);
+  font-weight: 700;
+}
+
+h1 { font-size: clamp(1.8rem, 4vw, 3rem); }
+h2 { font-size: clamp(1.3rem, 3vw, 2rem); margin-bottom: var(--space-lg); }
+h3 { font-size: 1.1rem; margin-bottom: var(--space-sm); }
+
+ul, ol {
+  /* padding-left — indents the list marker */
+  padding-left: 1.5rem;
+}
+
+li { margin-bottom: var(--space-xs); }
+
+img {
+  /* display: block — images are inline by default (causes bottom gap). */
+  display: block;
+  /* max-width: 100% — prevents images overflowing their container. */
+  max-width: 100%;
+}
+
+input, button {
+  font-family: inherit; /* inputs use their own font by default — fix it */
+  font-size: inherit;
+}
+
+figure {
+  margin: 0;
+}
+
+figcaption {
+  font-size: 0.8rem;
+  color: var(--on-surface-muted);
+  margin-bottom: var(--space-xs);
+}
+
+
+/* =============================================================
+   4 · PAGE LAYOUT
+   ============================================================= */
+
+.page-header {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: #fff;
+  padding: var(--space-xl) var(--space-lg);
+  text-align: center;
+}
+
+.page-header h1 {
+  color: #fff;
+  margin-bottom: var(--space-sm);
+}
+
+.subtitle {
+  opacity: 0.85;
+  margin-bottom: var(--space-lg);
+  max-width: none;
+}
+
+/* Navigation — a flex row of links */
+.toc {
+  display: flex;           /* flex container — children become flex items */
+  flex-wrap: wrap;         /* items wrap to next line when they don't fit */
+  gap: var(--space-xs);    /* gap: uniform space between flex items (no hacks needed) */
+  justify-content: center; /* center items along the main axis (horizontal here) */
+  max-width: none;
+}
+
+.toc a {
+  color: #fff;
+  background: rgba(255,255,255,0.2);
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;    /* pill shape: border-radius larger than height */
+  font-size: 0.8rem;
+  text-decoration: none;
+  transition: background 0.2s ease;
+  white-space: nowrap;     /* prevents link text from breaking mid-word */
+}
+
+.toc a:hover {
+  background: rgba(255,255,255,0.4);
+  text-decoration: none;
+}
+
+main {
+  /* max-width — constrains the content to a readable width on wide screens */
+  max-width: 1100px;
+
+  /* margin: 0 auto — centers a block element when it has a max-width.
+     auto left+right margins split the remaining space equally. */
+  margin: 0 auto;
+
+  padding: var(--space-lg);
+}
+
+.page-footer {
+  text-align: center;
+  padding: var(--space-xl);
+  color: var(--on-surface-muted);
+  border-top: 1px solid var(--border-color);
+  font-size: 0.875rem;
+}
+
+
+/* =============================================================
+   5 · DEMO SECTION / BLOCK STRUCTURE
+   ============================================================= */
+
+.demo-section {
+  /* border-bottom — horizontal rule between sections */
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: var(--space-2xl);
+  margin-bottom: var(--space-2xl);
+}
+
+.demo-section h2 {
+  /* position: sticky — stays at the top of the viewport while scrolling
+     through the section. top: 0 is the sticking threshold. */
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  padding: var(--space-md) 0;
+  border-bottom: 2px solid var(--color-primary);
+  margin-bottom: var(--space-lg);
+
+  /* z-index — stacking order. Higher = in front.
+     Only applies to positioned elements (position ≠ static). */
+  z-index: 10;
+}
+
+.section-intro {
+  background: var(--surface-2);
+  border-left: 4px solid var(--color-primary);
+  padding: var(--space-md);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  margin-bottom: var(--space-lg);
+  max-width: none;
+}
+
+.demo-block {
+  background: var(--surface-2);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+
+.demo-label {
+  font-size: 0.85rem;
+  color: var(--on-surface-muted);
+  margin-bottom: var(--space-md);
+  max-width: none;
+}
+
+.demo-output {
+  background: var(--surface);
+  border: 1px dashed var(--border-color);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+}
+
+
+/* =============================================================
+   6 · SECTION 1 — SELECTORS
+   ============================================================= */
+
+/* --- Class selector --- */
+/* .highlight: only <p class="highlight"> elements */
+.highlight {
+  background-color: #fef9c3;   /* yellow highlight */
+  border-left: 4px solid #eab308;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  color: #713f12;
+}
+
+/* --- ID selector --- */
+/* #unique-box: only the element with id="unique-box" */
+#unique-box {
+  background: var(--color-primary);
+  color: #fff;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius);
+  font-weight: bold;
+}
+
+/* --- Attribute selectors --- */
+/* [type="text"] — exact attribute value match */
+[type="text"] {
+  border: 2px solid var(--color-primary);
+  padding: 0.4rem 0.6rem;
+  border-radius: var(--radius);
+  outline: none;
+}
+
+/* [type="email"] — another exact match */
+[type="email"] {
+  border: 2px solid var(--color-accent);
+  padding: 0.4rem 0.6rem;
+  border-radius: var(--radius);
+  outline: none;
+  margin-left: var(--space-sm);
+}
+
+/* [href^="https"] — ^ means "starts with" */
+[href^="https"] {
+  font-weight: bold;
+}
+
+/* ::before — pseudo-element; inserts generated content BEFORE the element's content.
+   content: is required (even content: "" for decoration-only uses). */
+[href^="https"]::before {
+  content: "🔒 ";
+}
+
+/* --- Combinators --- */
+/* A > B — direct child combinator: only immediate children */
+.parent > .child {
+  background: #dbeafe;
+  padding: var(--space-xs) var(--space-sm);
+  margin: var(--space-xs) 0;
+  border-radius: var(--radius);
+}
+
+/* A B — descendant combinator: any nested B inside A */
+.parent .grandchild {
+  background: #ede9fe;
+  padding: 2px var(--space-xs);
+  border-radius: 3px;
+  font-size: 0.85rem;
+}
+
+/* A + B — adjacent sibling combinator: the B immediately after A */
+.parent + .adjacent {
+  color: var(--color-danger);
+  font-weight: bold;
+}
+
+/* A ~ B — general sibling combinator: all B siblings after A */
+.parent ~ .sibling {
+  color: var(--color-success);
+  font-style: italic;
+}
+
+.combinator-demo .parent {
+  background: var(--surface-3);
+  padding: var(--space-sm);
+  border-radius: var(--radius);
+  margin-bottom: var(--space-sm);
+  font-weight: bold;
+}
+
+/* --- Specificity --- */
+/* Element selector: 0-0-0-1 */
+p { /* already declared above */ }
+
+/* Class selector: 0-0-1-0 — beats element */
+.spec-class {
+  color: green;
+}
+
+/* ID selector: 0-1-0-0 — beats class */
+#spec-id {
+  color: orange;
+}
+
+/* Inline style wins over all selectors: 1-0-0-0 */
+/* The element has style="..." applied via CSS custom property trick for demo */
+.specificity-demo p {
+  padding: var(--space-md);
+  background: var(--surface-3);
+  border-radius: var(--radius);
+  color: var(--color-danger); /* will be beaten by inline style */
+
+  /* !important beats everything (including inline styles).
+     Avoid it — use higher specificity instead. */
+  /* color: red !important; */
+}
+
+
+/* =============================================================
+   7 · SECTION 2 — BOX MODEL
+   ============================================================= */
+
+.box-model-demo {
+  display: flex;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+.box {
+  width: 200px;
+  padding: 20px;             /* 20px on all four sides */
+  border: 2px solid #000;
+  background: #dbeafe;
+  font-size: 0.8rem;
+}
+
+/* content-box: the DEFAULT.
+   width applies to content only. Padding + border are ADDED ON TOP.
+   Total width = 200 + 40 (20*2 padding) + 4 (2*2 border) = 244px */
+.content-box-demo {
+  box-sizing: content-box;
+  background: #fce7f3;
+  border-color: var(--color-danger);
+}
+
+/* border-box: the RECOMMENDED reset.
+   width INCLUDES padding and border.
+   Total width = 200px exactly. */
+.border-box-demo {
+  box-sizing: border-box;
+  background: #dcfce7;
+  border-color: var(--color-success);
+}
+
+.box span {
+  display: block;
+  font-weight: bold;
+  margin-bottom: var(--space-xs);
+}
+
+/* --- Margin collapse --- */
+.margin-collapse-demo {
+  background: var(--surface-3);
+  padding: var(--space-sm);
+}
+
+.collapse-box {
+  background: var(--color-primary);
+  color: #fff;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+}
+
+/* margin-bottom: 30px on first, margin-top: 20px on second.
+   Result: 30px gap (the LARGER value wins — they don't add up).
+   Collapse only happens in block flow (not in flex/grid containers). */
+.collapse-box:first-child { margin-bottom: 30px; }
+.collapse-box:last-child  { margin-top: 20px; }
+
+/* --- outline vs border --- */
+.outline-btn {
+  padding: var(--space-sm) var(--space-md);
+  border: 2px solid var(--color-primary);
+  background: var(--surface);
+  border-radius: var(--radius);
+  cursor: pointer;
+
+  /* outline: none removes the default browser focus ring — only OK
+     if you replace it with a custom one (below). */
+  outline: none;
+
+  /* transition — smooth appearance of focus ring */
+  transition: box-shadow 0.2s ease;
+}
+
+/* :focus — applied when element receives keyboard or click focus.
+   Using box-shadow instead of outline to allow border-radius to apply. */
+.outline-btn:focus {
+  /* box-shadow: x-offset y-offset blur spread color
+     box-shadow does NOT affect layout — it's painted on top */
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+}
+
+
+/* =============================================================
+   8 · SECTION 3 — TYPOGRAPHY
+   ============================================================= */
+
+.typography-demo p { margin-bottom: var(--space-sm); max-width: none; }
+
+/* font-family */
+.typo-serif  { font-family: Georgia, 'Times New Roman', serif; }
+.typo-mono   { font-family: var(--font-mono); background: var(--surface-3); padding: 2px 6px; }
+
+/* font-weight: keyword or numeric (100–900, multiples of 100) */
+.typo-bold   { font-weight: bold; }          /* bold = 700 */
+.typo-light  { font-weight: 300; }           /* lighter than normal (400) */
+
+/* font-style */
+.typo-italic  { font-style: italic; }        /* uses italic variant of the font */
+.typo-oblique { font-style: oblique 20deg; } /* skews the regular variant */
+
+/* --- Spacing --- */
+/* line-height: unitless value preferred (children inherit the ratio, not a fixed px) */
+.line-height-demo { line-height: 2; max-width: none; }
+
+/* letter-spacing: space between individual characters */
+.letter-spacing-demo { letter-spacing: 0.2em; }
+
+/* word-spacing: space between words */
+.word-spacing-demo { word-spacing: 1em; }
+
+/* text-align */
+.text-align-center  { text-align: center; max-width: none; }
+.text-align-justify { text-align: justify; max-width: none; }
+
+/* --- Decoration & Transform --- */
+/* text-decoration shorthand: line style color thickness */
+.underline-demo    { text-decoration: underline wavy red; }
+.line-through-demo { text-decoration: line-through var(--color-danger) 2px; }
+
+/* text-transform: uppercase | lowercase | capitalize | none */
+.uppercase-demo    { text-transform: uppercase; }
+.capitalize-demo   { text-transform: capitalize; }
+
+/* text-shadow: x-offset y-offset blur-radius color
+   Multiple shadows: comma-separated */
+.text-shadow-demo  { text-shadow: 2px 2px 4px rgba(0,0,0,0.5), -1px -1px 0 rgba(0,0,50,0.2); font-size: 1.3rem; }
+
+/* white-space: nowrap — prevents ALL wrapping.
+   Other values: normal (default) | pre | pre-wrap | pre-line | break-spaces */
+.white-space-demo  {
+  white-space: nowrap;
+
+  /* overflow: auto — adds scrollbar when content is too wide */
+  overflow: auto;
+  background: var(--surface-3);
+  padding: var(--space-xs) var(--space-sm);
+}
+
+/* --- Fluid typography --- */
+/* clamp(min, preferred, max) — the preferred value scales with viewport.
+   The font will never be smaller than 1rem or larger than 2.5rem. */
+.fluid-type {
+  font-size: clamp(1rem, 2.5vw + 0.5rem, 2.5rem);
+  font-weight: bold;
+  max-width: none;
+}
+
+
+/* =============================================================
+   9 · SECTION 4 — COLORS
+   ============================================================= */
+
+.color-demo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.color-swatch {
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.named    { background: tomato;                    color: #fff; }
+.hex      { background: #3B82F6;                   color: #fff; }
+.rgb      { background: rgb(59, 130, 246);          color: #fff; }
+.rgba     { background: rgba(59, 130, 246, 0.5);    color: var(--on-surface); }
+.hsl      { background: hsl(217, 91%, 60%);         color: #fff; }
+.hsla     { background: hsla(217, 91%, 60%, 0.6);   color: var(--on-surface); }
+.oklch    { background: oklch(60% 0.18 250);        color: #fff; }
+
+/* currentColor — inherits the element's current color value.
+   Useful for SVG icons and borders that should match text. */
+.currentcolor {
+  color: purple;
+  border: 3px solid currentColor; /* border matches the purple text */
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius);
+}
+
+/* --- opacity vs rgba --- */
+.opacity-demo {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+/* opacity: affects element AND all its children — cannot be undone by children */
+.opacity-box {
+  opacity: 0.4;            /* 0 = invisible, 1 = fully visible */
+  background: var(--color-primary);
+  color: #fff;
+  padding: var(--space-md);
+  border-radius: var(--radius);
+  flex: 1;
+}
+
+/* rgba alpha: only the background is semi-transparent; text stays opaque */
+.rgba-box {
+  background: rgba(59, 130, 246, 0.4);
+  color: var(--on-surface);  /* fully opaque text */
+  padding: var(--space-md);
+  border-radius: var(--radius);
+  flex: 1;
+}
+
+
+/* =============================================================
+   10 · SECTION 5 — BACKGROUNDS
+   ============================================================= */
+
+.bg-demo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.bg-demo > div {
+  height: 80px;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  padding: var(--space-sm);
+}
+
+/* background-color: solid fill */
+.bg-color {
+  background-color: #f0abfc;
+  color: #3b0764;
+  text-shadow: none;
+}
+
+/* background-image with default repeat (tile) */
+.bg-repeat {
+  /* Creates a polka-dot pattern with two radial-gradients tiled */
+  background-image: radial-gradient(circle, #3b82f6 2px, transparent 2px);
+  background-size: 16px 16px; /* tile size */
+  background-color: #eff6ff;
+  color: #1e3a8a;
+  text-shadow: none;
+}
+
+/* background-repeat: no-repeat — only one copy of the image */
+.bg-no-repeat {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='18' fill='%23f59e0b'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;     /* values: repeat | repeat-x | repeat-y | no-repeat | space | round */
+  background-position: center;      /* x y: keywords, %, or px */
+  background-color: #fef3c7;
+  color: #92400e;
+  text-shadow: none;
+}
+
+/* background-size: cover — scales to fill the entire box, may crop */
+.bg-cover {
+  background-image: url("https://picsum.photos/seed/bg1/400/100");
+  background-size: cover;           /* values: auto | cover | contain | px | % */
+  background-position: center;
+}
+
+/* background-size: contain — scales to fit entirely, may leave gaps */
+.bg-contain {
+  background-image: url("https://picsum.photos/seed/bg1/400/100");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #1e293b;
+}
+
+/* --- Gradients --- */
+.gradient-demo {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.gradient-demo > div {
+  flex: 1;
+  min-width: 140px;
+  height: 80px;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  text-align: center;
+  padding: var(--space-xs);
+}
+
+/* linear-gradient(direction, color-stop, color-stop, …)
+   Direction: angle (135deg) or keywords (to right, to bottom left) */
+.grad-linear {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* radial-gradient(shape size at position, color, color)
+   Shape: circle | ellipse */
+.grad-radial {
+  background: radial-gradient(circle at center, #f093fb 0%, #f5576c 100%);
+}
+
+/* conic-gradient(from angle at position, color, color, …)
+   Sweeps around a center point like a color wheel */
+.grad-conic {
+  background: conic-gradient(from 0deg, red, yellow, green, blue, red);
+}
+
+/* repeating-linear-gradient — tiles the pattern indefinitely */
+.grad-repeating {
+  background: repeating-linear-gradient(
+    45deg,
+    #000 0px, #000 5px,
+    #fff 5px, #fff 10px
+  );
+  color: #000;
+  text-shadow: 0 0 4px #fff;
+}
+
+/* --- background-clip & blend-mode --- */
+
+/* background-clip: text — background shows through the text shape.
+   Requires color: transparent to see through. */
+.bg-clip-text {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  -webkit-background-clip: text; /* prefix still needed for Chrome/Safari */
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+          color: transparent;
+  font-size: 1.5rem;
+  font-weight: 900;
+  padding: var(--space-sm);
+}
+
+/* background-blend-mode — blends background-image with background-color.
+   Values: multiply | screen | overlay | darken | lighten | etc. */
+.bg-blend {
+  background-image: url("https://picsum.photos/seed/bg2/300/100");
+  background-color: rgba(59, 130, 246, 0.7);
+  background-blend-mode: multiply;
+  background-size: cover;
+  height: 80px;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 600;
+  margin-top: var(--space-sm);
+}
+
+
+/* =============================================================
+   11 · SECTION 6 — DISPLAY & VISIBILITY
+   ============================================================= */
+
+.display-demo {
+  line-height: 2;
+}
+
+/* display: block — full width, starts on a new line */
+.d-block {
+  display: block;
+  background: #dbeafe;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius);
+  margin-bottom: var(--space-xs);
+}
+
+/* display: inline — flows with text, no width/height, no top/bottom margin */
+.d-inline {
+  display: inline;
+  background: #fce7f3;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+/* display: inline-block — inline flow but accepts width, height, margin */
+.d-inline-block {
+  display: inline-block;
+  width: 80px;
+  height: 40px;
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: var(--radius);
+  text-align: center;
+  line-height: 40px;
+  margin: 2px;
+  font-size: 0.8rem;
+}
+
+/* --- visibility --- */
+.visibility-demo > div {
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  margin-bottom: var(--space-xs);
+}
+
+/* visibility: visible — default; element is shown */
+.vis-visible {
+  visibility: visible;
+}
+
+/* visibility: hidden — element is invisible BUT its space is preserved.
+   Compare: display: none removes the space too. */
+.vis-hidden {
+  visibility: hidden;
+  background: repeating-linear-gradient(
+    45deg, #e2e8f0 0px, #e2e8f0 4px, transparent 4px, transparent 8px
+  );
+}
+
+/* display: none — element is completely removed from layout.
+   It's as if it doesn't exist (no space reserved). */
+.vis-none {
+  display: none;
+}
+
+
+/* =============================================================
+   12 · SECTION 7 — FLEXBOX
+   ============================================================= */
+
+/* All flex containers share this base */
+.flex-demo {
+  display: flex;           /* turns children into flex items */
+  background: var(--surface-3);
+  border-radius: var(--radius);
+  padding: var(--space-sm);
+  margin-bottom: var(--space-sm);
+  min-height: 60px;
+}
+
+.flex-item {
+  background: var(--color-primary);
+  color: #fff;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+}
+
+/* --- flex-direction --- */
+/* row: left-to-right (default main axis) */
+.flex-row         { flex-direction: row; gap: var(--space-xs); }
+
+/* column: top-to-bottom (main axis becomes vertical) */
+.flex-col         { flex-direction: column; gap: var(--space-xs); }
+
+/* row-reverse: right-to-left */
+.flex-row-reverse { flex-direction: row-reverse; gap: var(--space-xs); }
+
+/* --- justify-content (along main axis) --- */
+.jc-start   { justify-content: flex-start; gap: var(--space-xs); }   /* default */
+.jc-end     { justify-content: flex-end; gap: var(--space-xs); }
+.jc-center  { justify-content: center; gap: var(--space-xs); }
+.jc-between { justify-content: space-between; }  /* equal space BETWEEN items */
+.jc-around  { justify-content: space-around; }   /* equal space AROUND items (half at edges) */
+.jc-evenly  { justify-content: space-evenly; }   /* equal space everywhere including edges */
+
+/* --- align-items (along cross axis — perpendicular to main) --- */
+.ai-demo    { align-items: stretch; gap: var(--space-xs); height: 80px; } /* default: stretch */
+.ai-center  { align-items: center; gap: var(--space-xs); height: 80px; }
+.ai-baseline { align-items: baseline; gap: var(--space-xs); height: 80px; }
+
+/* A tall item that demonstrates cross-axis alignment */
+.ai-tall { height: 60px; }
+.ai-stretch { align-self: stretch; }
+
+/* --- flex-wrap --- */
+/* nowrap: default — items shrink to fit in one line */
+/* wrap: items move to next line when they can't fit */
+.flex-wrap-demo {
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.wrap-item {
+  /* flex-basis: the initial size of a flex item BEFORE growing or shrinking */
+  flex-basis: 120px;
+  /* flex-shrink: 0 — item will NOT shrink below its flex-basis */
+  flex-shrink: 0;
+}
+
+/* --- flex-grow --- */
+.grow-demo { gap: var(--space-xs); align-items: stretch; }
+
+/* flex-grow: 1 — item takes all available space after others are sized.
+   flex-grow: 2 would take double the space of flex-grow: 1 items. */
+.grow-item {
+  flex-grow: 1;            /* fill remaining space */
+  background: var(--color-success);
+}
+
+/* --- order --- */
+.order-demo { gap: var(--space-xs); }
+
+/* order: changes visual order without changing DOM order (important for accessibility!) */
+.order-1 { order: 1; background: var(--color-success); }
+.order-2 { order: 2; background: var(--color-accent); }
+.order-3 { order: 3; background: var(--color-danger); }
+
+/* --- gap --- */
+/* gap: row-gap column-gap shorthand.
+   Replaces the old margin-on-children hack. */
+.gap-demo { gap: var(--space-lg); }  /* 1.5rem between every item */
+
+
+/* =============================================================
+   13 · SECTION 8 — CSS GRID
+   ============================================================= */
+
+.grid-demo {
+  display: grid;           /* 2D layout — rows AND columns simultaneously */
+  gap: var(--space-sm);    /* shorthand for row-gap + column-gap */
+  background: var(--surface-3);
+  padding: var(--space-sm);
+  border-radius: var(--radius);
+  margin-bottom: var(--space-md);
+}
+
+.grid-item {
+  background: var(--color-secondary);
+  color: #fff;
+  padding: var(--space-sm);
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 50px;
+}
+
+/* --- grid-template-columns with fr unit --- */
+/* 1fr 2fr 1fr: three columns; middle gets twice the space of the others */
+.grid-3col {
+  grid-template-columns: 1fr 2fr 1fr;
+  /* grid-template-rows is auto by default — rows size to their content */
+}
+
+/* --- Spanning: grid-column / grid-row --- */
+/* grid-template-columns: repeat(3, 1fr) = "1fr 1fr 1fr" */
+.grid-span-demo {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* grid-column: start / end — column line numbers (1-based).
+   span 2 = "take 2 column tracks" */
+.span-col-2 { grid-column: 1 / span 2; }
+
+/* grid-row: start / end — spans multiple rows */
+.span-row-2 { grid-row: 2 / span 2; background: var(--color-accent); }
+
+/* --- Named areas --- */
+/* grid-template-areas: string of quoted rows.
+   Each word is a cell name. "." is an empty cell. */
+.grid-areas-demo {
+  grid-template-columns: 160px 1fr 120px;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "header header header"
+    "nav    main   aside"
+    "footer footer footer";
+  min-height: 200px;
+}
+
+/* grid-area: name — place item in a named area */
+.area-header { grid-area: header; background: #3b82f6; }
+.area-nav    { grid-area: nav;    background: #8b5cf6; }
+.area-main   { grid-area: main;   background: #10b981; }
+.area-aside  { grid-area: aside;  background: #f59e0b; }
+.area-footer { grid-area: footer; background: #64748b; }
+
+/* --- auto-fill with minmax --- */
+/* repeat(auto-fill, minmax(120px, 1fr)):
+   - auto-fill: create as many column tracks as fit
+   - minmax(120px, 1fr): each column is at least 120px, up to 1fr
+   Result: responsive grid with NO media queries */
+.grid-auto-fill {
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+}
+
+/* --- place-items --- */
+/* place-items: align-items justify-items shorthand.
+   center center: content centered within each grid cell */
+.grid-place-demo {
+  grid-template-columns: repeat(2, 1fr);
+  place-items: center;     /* shorthand: align-items justify-items */
+  min-height: 120px;
+}
+
+
+/* =============================================================
+   14 · SECTION 9 — POSITIONING
+   ============================================================= */
+
+.pos-demo {
+  position: relative;    /* establishes a containing block for absolute children */
+  background: var(--surface-3);
+  padding: var(--space-md);
+  border-radius: var(--radius);
+  min-height: 80px;
+  margin-bottom: var(--space-md);
+}
+
+.pos-box {
+  background: var(--color-primary);
+  color: #fff;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius);
+  margin-bottom: var(--space-xs);
+  font-size: 0.85rem;
+  display: inline-block;
+}
+
+/* position: static — the default value.
+   top/left/right/bottom have NO effect.
+   The element is in normal document flow. */
+.pos-static {
+  position: static;
+}
+
+/* position: relative — element stays in normal flow BUT:
+   - top/left/right/bottom offset it FROM its normal position.
+   - original space in flow is STILL RESERVED.
+   - creates a new stacking context and positioning context for children. */
+.pos-relative {
+  position: relative;
+  top: 20px;     /* moves DOWN 20px (counter-intuitive: top moves it away from the top) */
+  left: 30px;    /* moves RIGHT 30px */
+  background: var(--color-accent);
+}
+
+/* The container below absolute element needs relative positioning */
+.pos-absolute-container {
+  min-height: 120px;
+}
+
+/* position: absolute — removed from normal flow (no space reserved).
+   Positioned relative to nearest ancestor with position ≠ static.
+   If none, it uses the initial containing block (the viewport). */
+.pos-absolute {
+  position: absolute;
+  top: 0;       /* 0px from the top of .pos-absolute-container */
+  right: 0;     /* 0px from the right of .pos-absolute-container */
+  background: var(--color-danger);
+  margin: 0;
+}
+
+/* --- Sticky positioning --- */
+.sticky-demo {
+  height: 150px;
+  overflow-y: scroll;     /* scroll container required for sticky to work */
+  background: var(--surface-3);
+  border-radius: var(--radius);
+  padding: var(--space-sm);
+}
+
+/* position: sticky — hybrid of relative and fixed.
+   Behaves like relative until it hits the threshold (top: 0),
+   then sticks like fixed WITHIN ITS SCROLL CONTAINER. */
+.sticky-header {
+  position: sticky;
+  top: 0;                  /* sticking threshold: sticks when 0px from top */
+  background: var(--color-primary);
+  color: #fff;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius);
+  margin-bottom: var(--space-sm);
+  font-weight: bold;
+  font-size: 0.875rem;
+}
+
+/* --- z-index --- */
+.z-demo {
+  position: relative;
+  height: 100px;
+}
+
+.z-box {
+  position: absolute;     /* z-index only works on positioned elements */
+  width: 120px;
+  height: 60px;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.z-low  { z-index: 1; background: var(--color-danger);    top: 20px; left: 20px; }
+.z-mid  { z-index: 2; background: var(--color-primary);   top: 30px; left: 60px; }
+.z-high { z-index: 3; background: var(--color-secondary); top: 40px; left: 100px; }
+
+
+/* =============================================================
+   15 · SECTION 10 — SIZING
+   ============================================================= */
+
+.sizing-demo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.size-box {
+  background: var(--color-primary);
+  color: #fff;
+  padding: var(--space-sm);
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Fixed size — never changes */
+.fixed-size {
+  width: 200px;
+  height: 60px;
+}
+
+/* Percentage — relative to the parent element's width */
+.percent-size {
+  width: 50%;
+}
+
+/* min-width / max-width — flexible within a range */
+.min-max-size {
+  min-width: 100px;  /* won't shrink below 100px */
+  max-width: 300px;  /* won't grow beyond 300px */
+  width: 60%;        /* tries to be 60% — clamped by min/max */
+}
+
+/* aspect-ratio — maintains a width/height ratio automatically.
+   No more padding-top hack needed. */
+.aspect-ratio-box {
+  width: 100%;
+  aspect-ratio: 16 / 9;   /* height auto-calculated from width */
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  max-height: 200px;
+}
+
+/* --- object-fit --- */
+.object-fit-demo {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.object-fit-demo figure {
+  flex: 1;
+  min-width: 120px;
+}
+
+.object-fit-demo img {
+  width: 100%;
+  height: 100px;
+  border-radius: var(--radius);
+  border: 2px solid var(--border-color);
+}
+
+/* fill: default — stretches image to fill box (distorts proportions) */
+.obj-fill    { object-fit: fill; }
+
+/* cover: scales to fill box, clips excess (maintains proportions) */
+.obj-cover   { object-fit: cover; }
+
+/* contain: scales to fit entirely within box (may have letterboxing) */
+.obj-contain { object-fit: contain; background: var(--surface-3); }
+
+
+/* =============================================================
+   16 · SECTION 11 — OVERFLOW
+   ============================================================= */
+
+.overflow-demo {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.ov-box {
+  width: 160px;
+  height: 80px;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: var(--space-xs);
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+/* overflow: visible — content renders outside the box (default) */
+.ov-visible { overflow: visible; border-color: var(--color-danger); }
+
+/* overflow: hidden — clips content at the box edge; no scrollbar */
+.ov-hidden  { overflow: hidden;  border-color: var(--color-primary); }
+
+/* overflow: scroll — always shows scrollbars (even when not needed) */
+.ov-scroll  { overflow: scroll;  border-color: var(--color-secondary); }
+
+/* overflow: auto — only shows scrollbar when content overflows */
+.ov-auto    { overflow: auto;    border-color: var(--color-success); }
+
+/* --- text-overflow: ellipsis --- */
+/* Requires the three-line combo:
+   1. overflow: hidden — clips the overflowing text
+   2. white-space: nowrap — prevents wrapping (makes text overflow horizontally)
+   3. text-overflow: ellipsis — replaces clipped text with "…" */
+.ellipsis-demo {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  background: var(--surface-3);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius);
+  max-width: none;
+  margin: 0;
+}
+
+
+/* =============================================================
+   17 · SECTION 12 — TRANSFORMS
+   ============================================================= */
+
+.transform-demo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-lg);
+  padding: var(--space-lg);
+  align-items: center;
+}
+
+.tf-box {
+  width: 100px;
+  height: 60px;
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  text-align: center;
+  padding: var(--space-xs);
+}
+
+/* transform functions — all applied in ORDER (right to left mathematically) */
+.tf-original  { background: var(--surface-3); color: var(--on-surface); border: 2px dashed var(--border-color); }
+.tf-translate { transform: translate(20px, 10px); }           /* moves without affecting layout */
+.tf-rotate    { transform: rotate(15deg); }                   /* clockwise rotation */
+.tf-scale     { transform: scale(1.3); }                      /* 1.3× size, relative to transform-origin */
+.tf-skew      { transform: skewX(20deg); }                    /* shears along X axis */
+
+/* Multiple transforms in one declaration (space-separated) */
+.tf-combined  {
+  transform: translateX(10px) rotate(10deg) scale(1.1);
+  background: var(--color-success);
+}
+
+/* --- transform-origin --- */
+.transform-origin-demo {
+  display: flex;
+  gap: var(--space-xl);
+  padding: var(--space-lg);
+  justify-content: center;
+}
+
+.origin-box {
+  width: 80px;
+  height: 80px;
+  background: var(--color-secondary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  text-align: center;
+  border-radius: var(--radius);
+  transform: rotate(30deg);
+}
+
+.origin-center       { transform-origin: center; }              /* default: 50% 50% */
+.origin-top-left     { transform-origin: top left; }            /* 0% 0% */
+.origin-bottom-right { transform-origin: bottom right; }        /* 100% 100% */
+
+/* --- 3D transforms --- */
+.perspective-container {
+  /* perspective: the distance from the viewer to the z=0 plane.
+     Smaller value = more dramatic 3D effect.
+     Must be on the PARENT of the transformed element. */
+  perspective: 400px;
+  display: flex;
+  justify-content: center;
+  padding: var(--space-lg);
+}
+
+.tf-3d-box {
+  width: 200px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  border-radius: var(--radius);
+  transform: rotateY(45deg);       /* rotates around the Y (vertical) axis */
+  /* Other 3D: rotateX(), rotateZ(), translateZ(), scaleZ() */
+}
+
+
+/* =============================================================
+   18 · SECTION 13 — TRANSITIONS
+   ============================================================= */
+
+.transition-demo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.tr-btn {
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 0.8rem;
+  transform: translateX(0);        /* must declare initial state for transform transitions */
+}
+
+/* transition shorthand: property duration timing-function delay
+   Transitions trigger on ANY state change (hover, focus, class toggle, etc.) */
+.tr-linear      { transition: transform 0.5s linear; }
+.tr-ease        { transition: transform 0.5s ease; }         /* default */
+.tr-ease-in     { transition: transform 0.5s ease-in; }
+.tr-ease-out    { transition: transform 0.5s ease-out; }
+.tr-ease-in-out { transition: transform 0.5s ease-in-out; }
+
+/* cubic-bezier(x1, y1, x2, y2) — custom easing curve.
+   Use https://cubic-bezier.com to build your own. */
+.tr-cubic       { transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
+
+/* transition-delay: waits before starting */
+.tr-delay       { transition: transform 0.4s ease 0.3s; }
+
+/* steps(n): divides the transition into n discrete jumps (no interpolation) */
+.tr-steps       { transition: transform 0.5s steps(4); }
+
+/* Hover state that the transitions animate TO */
+.tr-btn:hover { transform: translateX(20px); }
+
+/* --- transition: all --- */
+.tr-card {
+  padding: var(--space-lg);
+  background: var(--surface-3);
+  border-radius: var(--radius);
+  cursor: pointer;
+  color: var(--on-surface);
+  font-weight: 600;
+  text-align: center;
+
+  /* transition: all — animates EVERY animatable property that changes.
+     Use specific property names in production (better performance). */
+  transition: all 0.4s ease;
+  box-shadow: var(--shadow);
+}
+
+.tr-card:hover {
+  background: var(--color-primary);
+  color: #fff;
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: var(--shadow-lg);
+}
+
+
+/* =============================================================
+   19 · SECTION 14 — ANIMATIONS
+   ============================================================= */
+
+/* @keyframes: defines the animation sequence.
+   Use % (0% to 100%) or keyword from/to. */
+
+@keyframes pulse {
+  0%   { transform: scale(1);    opacity: 1; }
+  50%  { transform: scale(1.08); opacity: 0.8; }
+  100% { transform: scale(1);    opacity: 1; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes bounce {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-20px); }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.anim-demo {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.anim-box {
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: var(--radius);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+  flex: 1;
+  min-width: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* animation shorthand: name duration timing-function delay iteration-count direction fill-mode play-state */
+.anim-pulse  { animation: pulse 1.5s ease infinite alternate; }
+.anim-spin   { animation: spin 2s linear infinite; }
+.anim-bounce { animation: bounce 0.6s ease-in-out infinite alternate; background: var(--color-success); }
+.anim-slide  { animation: slide-in 0.8s ease-out 1 both; background: var(--color-secondary); }
+
+/* animation-play-state: running (default) | paused */
+.anim-pausable {
+  animation: spin 3s linear infinite;
+  background: var(--color-accent);
+  color: #000;
+}
+.anim-pausable:hover {
+  animation-play-state: paused;
+}
+
+/* animation-fill-mode: forwards — element stays at the LAST keyframe after animation ends.
+   Values: none | forwards | backwards | both */
+.anim-forwards {
+  animation: slide-in 1s ease-out forwards;
+  background: var(--color-secondary);
+  animation-iteration-count: 1;
+}
+
+/* Stagger: each item uses the same animation but a different delay (set inline) */
+.stagger-demo {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+.stagger-item {
+  width: 40px;
+  height: 40px;
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  animation: fade-in-up 0.4s ease both;
+  /* animation-delay is set via inline style in HTML for each item */
+}
+
+/* --- prefers-reduced-motion --- */
+/* @media (prefers-reduced-motion: reduce) stops or reduces all motion
+   for users who have enabled "Reduce Motion" in their OS settings.
+   This is an accessibility requirement. */
+
+.anim-respect-motion {
+  animation: pulse 1.5s ease infinite alternate;
+  background: var(--color-success);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Option 1: stop all animations globally */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Option 2: provide a subtle static alternative for specific elements */
+  .anim-respect-motion {
+    animation: none;
+    border: 3px solid var(--color-success);
+  }
+}
+
+
+/* =============================================================
+   20 · SECTION 15 — PSEUDO-CLASSES & PSEUDO-ELEMENTS
+   ============================================================= */
+
+/* --- Interaction pseudo-classes --- */
+.pseudo-interaction { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-sm); }
+
+.pseudo-link {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+/* :hover — mouse is over the element */
+.pseudo-link:hover   { color: var(--color-secondary); text-decoration: underline; }
+/* :active — element is being clicked (mouse held down) */
+.pseudo-link:active  { color: var(--color-danger); }
+/* :visited — user has previously visited this URL */
+.pseudo-link:visited { color: var(--color-secondary); }
+
+.pseudo-btn {
+  padding: var(--space-sm) var(--space-lg);
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.pseudo-btn:hover  { transform: scale(1.05); box-shadow: var(--shadow-lg); }
+.pseudo-btn:active { transform: scale(0.96); box-shadow: none; }
+
+.pseudo-input {
+  padding: var(--space-sm) var(--space-md);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  background: var(--surface);
+  color: var(--on-surface);
+  width: 240px;
+}
+/* :focus — element is keyboard-focused */
+.pseudo-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.3);
+}
+
+/* --- Structural pseudo-classes --- */
+.nth-demo ul { list-style: none; padding: 0; }
+.nth-demo li {
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius);
+  margin-bottom: 2px;
+}
+
+/* :first-child — first sibling in its parent */
+.nth-demo li:first-child { background: #dbeafe; color: #1e3a8a; font-weight: bold; }
+/* :last-child — last sibling */
+.nth-demo li:last-child  { background: #fee2e2; color: #7f1d1d; font-weight: bold; }
+/* :nth-child(n) — nth element. Accepts formulas: even, odd, 2n+1, 3n, etc. */
+.nth-demo li:nth-child(2)    { background: #fff7ed; color: #92400e; }
+.nth-demo li:nth-child(even) { background: var(--surface-3); }
+
+/* --- :not() · :is() · :where() · :has() --- */
+.not-p {
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius);
+  margin-bottom: var(--space-xs);
+  max-width: none;
+  background: var(--surface-3);
+}
+
+/* :not(selector) — matches elements that do NOT match the argument */
+.not-p:not(.special) {
+  border-left: 3px solid var(--color-primary);
+}
+
+.not-p.special {
+  background: #fce7f3;
+  border-left: 3px dashed var(--color-danger);
+  font-style: italic;
+}
+
+/* :has() — parent selector: style a parent based on its children.
+   One of the most powerful recent additions to CSS. */
+.has-demo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius);
+  border: 2px solid var(--border-color);
+  transition: background 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+}
+
+/* When the label HAS a checked checkbox inside it, style the label */
+.has-demo:has(:checked) {
+  background: #dcfce7;
+  border-color: var(--color-success);
+}
+
+/* --- Form state pseudo-classes --- */
+.form-state-demo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.form-input {
+  padding: var(--space-sm);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius);
+  outline: none;
+  background: var(--surface);
+  color: var(--on-surface);
+  width: 100%;
+  transition: border-color 0.2s ease;
+}
+
+/* :required — input has the required attribute */
+.form-input:required { border-style: dashed; }
+
+/* :valid — value passes the browser's validation */
+.form-input:valid:not(:placeholder-shown) {
+  border-color: var(--color-success);
+}
+
+/* :invalid — value fails validation (:not(:placeholder-shown) prevents
+   red border on empty fields before the user starts typing) */
+.form-input:invalid:not(:placeholder-shown) {
+  border-color: var(--color-danger);
+}
+
+/* :disabled — input has the disabled attribute; non-interactive */
+.form-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--surface-3);
+}
+
+/* :checked — checkbox or radio is checked */
+.checkbox-demo:checked {
+  accent-color: var(--color-success);   /* accent-color: tints native checkboxes/radios */
+}
+
+/* --- Pseudo-elements --- */
+/* :: (double colon) = pseudo-element; creates a virtual element.
+   : (single colon) = pseudo-class; filters existing elements. */
+
+/* ::before — inserts virtual element BEFORE the content */
+/* ::after — inserts virtual element AFTER the content */
+.before-after {
+  position: relative;
+  padding: var(--space-sm) var(--space-lg);
+  background: var(--surface-3);
+  border-radius: var(--radius);
+  font-weight: 600;
+}
+
+.before-after::before {
+  content: "⭐ ";    /* content is REQUIRED — can be text, url(), counter(), "" */
+  color: var(--color-accent);
+}
+
+.before-after::after {
+  content: " →";
+  color: var(--color-primary);
+  font-weight: 900;
+}
+
+/* ::first-line — the first rendered line of a block element */
+.first-line-demo::first-line {
+  color: var(--color-primary);
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  max-width: none;
+}
+
+/* ::first-letter — the first character of a block element (drop cap) */
+.first-letter-demo::first-letter {
+  font-size: 3em;
+  font-weight: bold;
+  color: var(--color-secondary);
+  float: left;            /* wrap text around the drop cap */
+  line-height: 0.8;
+  margin: 0.05em 0.1em 0 0;
+}
+
+.first-letter-demo { max-width: none; }
+
+/* ::selection — styles the text highlighted by the user */
+.selection-demo::selection {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* ::placeholder — styles the placeholder text of an input */
+.placeholder-demo {
+  padding: var(--space-sm);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--on-surface);
+  outline: none;
+  width: 100%;
+}
+
+.placeholder-demo::placeholder {
+  color: var(--on-surface-muted);
+  font-style: italic;
+}
+
+
+/* =============================================================
+   21 · SECTION 16 — CUSTOM PROPERTIES
+   ============================================================= */
+
+.custom-props-demo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.cp-box {
+  padding: var(--space-md);
+  border-radius: var(--radius);
+  font-weight: 600;
+  color: #fff;
+}
+
+/* Using the tokens defined on :root */
+.cp-box.primary   { background: var(--color-primary); }
+.cp-box.secondary { background: var(--color-secondary); }
+
+/* Scoped variable: redefines --color-primary locally.
+   Children INHERIT the new value within this subtree. */
+.cp-box.scoped {
+  --color-primary: #f59e0b;    /* overrides :root value for this subtree */
+  background: var(--surface-3);
+  color: var(--on-surface);
+  border: 2px solid var(--color-primary);
+}
+
+.cp-inner {
+  background: var(--color-primary);   /* sees the scoped amber value, not the blue */
+  color: #fff;
+  padding: var(--space-sm);
+  border-radius: var(--radius);
+  margin-top: var(--space-sm);
+  font-weight: 600;
+}
+
+/* --- Dark mode card using tokens --- */
+.dark-card {
+  background: var(--surface-2);
+  color: var(--on-surface);
+  border: 1px solid var(--border-color);
+  padding: var(--space-md);
+  border-radius: var(--radius);
+}
+
+/* var() fallback: second argument used when the variable is not defined */
+.cp-fallback {
+  background: var(--undefined-var, hotpink);   /* fallback = hotpink */
+  color: white;
+  padding: var(--space-md);
+  border-radius: var(--radius);
+  font-weight: 600;
+}
+
+
+/* =============================================================
+   22 · SECTION 17 — FUNCTIONS
+   ============================================================= */
+
+/* calc() — arithmetic mixing units.
+   Operators must have spaces around + and - */
+.calc-box {
+  width: calc(100% - 60px);
+  background: var(--color-primary);
+  color: #fff;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+}
+
+.minmax-demo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.fn-box {
+  background: var(--color-secondary);
+  color: #fff;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* min(a, b) — uses whichever value is SMALLER */
+.fn-min   { width: min(80%, 400px); }
+
+/* max(a, b) — uses whichever value is LARGER */
+.fn-max   { width: max(200px, 40%); background: var(--color-accent); color: #000; }
+
+/* clamp(min, preferred, max) — constrained flexible value */
+.fn-clamp { width: clamp(150px, 50%, 400px); background: var(--color-success); }
+
+/* --- counter() --- */
+/* CSS counters let you number elements without JS or hardcoded numbers.
+   counter-reset: defines a new counter on the parent.
+   counter-increment: increments the counter on each item.
+   counter(): retrieves the current counter value. */
+
+.css-counter-list {
+  list-style: none;
+  padding-left: var(--space-lg);
+  /* counter-reset: name [start-value] — initialises the counter */
+  counter-reset: main-counter;
+}
+
+.css-counter-list > li {
+  counter-increment: main-counter;    /* increments by 1 each time (default) */
+  position: relative;
+  padding: var(--space-xs) 0 var(--space-xs) var(--space-lg);
+  margin-bottom: var(--space-xs);
+}
+
+.css-counter-list > li::before {
+  content: counter(main-counter) ". ";  /* outputs the current counter value */
+  position: absolute;
+  left: 0;
+  color: var(--color-primary);
+  font-weight: bold;
+}
+
+/* Nested counters — counters() (plural) includes all ancestor levels */
+.css-counter-list ol {
+  list-style: none;
+  padding-left: var(--space-lg);
+  counter-reset: sub-counter;
+}
+
+.css-counter-list ol li {
+  counter-increment: sub-counter;
+  position: relative;
+  padding-left: var(--space-lg);
+}
+
+.css-counter-list ol li::before {
+  content: counter(main-counter) "." counter(sub-counter) " ";
+  position: absolute;
+  left: 0;
+  color: var(--color-secondary);
+  font-size: 0.85rem;
+}
+
+
+/* =============================================================
+   23 · SECTION 18 — MEDIA QUERIES
+   ============================================================= */
+
+/* Mobile-first approach:
+   1. Write base styles for the smallest screen.
+   2. Add min-width breakpoints to layer in complexity.
+   Never use max-width in a mobile-first system (it's desktop-first). */
+
+/* Breakpoint indicator — only one span is visible at a time */
+.breakpoint-indicator { position: relative; min-height: 2rem; }
+
+.bp-xs, .bp-sm, .bp-md, .bp-lg, .bp-xl {
+  display: none;              /* hidden by default */
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius);
+  font-weight: 600;
+  width: 100%;
+}
+
+/* Base (smallest): show xs */
+.bp-xs { display: block; background: #fce7f3; color: #831843; }
+
+/* ≥ 480px: hide xs, show sm */
+@media (min-width: 480px) {
+  .bp-xs { display: none; }
+  .bp-sm { display: block; background: #dbeafe; color: #1e3a8a; }
+}
+
+/* ≥ 768px: hide sm, show md */
+@media (min-width: 768px) {
+  .bp-sm { display: none; }
+  .bp-md { display: block; background: #dcfce7; color: #14532d; }
+}
+
+/* ≥ 1024px: hide md, show lg */
+@media (min-width: 1024px) {
+  .bp-md { display: none; }
+  .bp-lg { display: block; background: #fef9c3; color: #713f12; }
+}
+
+/* ≥ 1280px: hide lg, show xl */
+@media (min-width: 1280px) {
+  .bp-lg { display: none; }
+  .bp-xl { display: block; background: #ede9fe; color: #4c1d95; }
+}
+
+/* --- Responsive grid (mobile-first) --- */
+.responsive-grid {
+  display: grid;
+  gap: var(--space-sm);
+
+  /* Base: 1 column (mobile) */
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 600px) {
+  .responsive-grid { grid-template-columns: 1fr 1fr; }       /* tablet: 2 cols */
+}
+
+@media (min-width: 900px) {
+  .responsive-grid { grid-template-columns: repeat(4, 1fr); } /* desktop: 4 cols */
+}
+
+.rg-item {
+  background: var(--color-primary);
+  color: #fff;
+  padding: var(--space-md);
+  border-radius: var(--radius);
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+/* --- Feature queries --- */
+/* prefers-color-scheme: handled via :root override at the top of this file */
+
+.mq-dark-mode  { display: none; }
+.mq-light-mode { display: inline; padding: var(--space-xs) var(--space-sm); background: #fef9c3; border-radius: var(--radius); }
+
+@media (prefers-color-scheme: dark) {
+  .mq-light-mode { display: none; }
+  .mq-dark-mode  { display: inline; padding: var(--space-xs) var(--space-sm); background: #1e3a8a; color: #bfdbfe; border-radius: var(--radius); }
+}
+
+/* --- @container queries --- */
+/* @container requires naming the container first with container-type.
+   The card then responds to ITS PARENT'S size, not the viewport. */
+
+.cq-wrapper {
+  container-type: inline-size;   /* enables container queries on this element */
+  container-name: card-wrapper;  /* optional name for targeted queries */
+  border: 2px dashed var(--border-color);
+  border-radius: var(--radius);
+  padding: var(--space-sm);
+}
+
+.cq-card {
+  display: flex;
+  flex-direction: column;        /* stacked on narrow container */
+  gap: var(--space-sm);
+  background: var(--surface-2);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+}
+
+.cq-image {
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: var(--radius);
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* @container name (condition) — just like @media but for the container */
+@container card-wrapper (min-width: 350px) {
+  .cq-card {
+    flex-direction: row;           /* side by side on wider container */
+    align-items: center;
+  }
+  .cq-image {
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+  }
+}
+
+/* --- Print styles --- */
+@media print {
+  .page-header nav,
+  .toc,
+  .fixed-badge,
+  .page-footer { display: none; }
+
+  body { font-size: 12pt; color: #000; background: #fff; }
+  .demo-section { page-break-inside: avoid; }
+  a[href]::after { content: " (" attr(href) ")"; font-size: 0.8em; }
+}
+
+
+/* =============================================================
+   24 · FIXED BADGE (position: fixed demo)
+   ============================================================= */
+
+/* position: fixed — removed from flow; positioned relative to the VIEWPORT.
+   Stays in place when the user scrolls. */
+.fixed-badge {
+  position: fixed;
+  bottom: var(--space-lg);    /* 1.5rem from the bottom of the viewport */
+  right: var(--space-lg);     /* 1.5rem from the right */
+  z-index: 100;               /* above all other content */
+
+  background: var(--color-primary);
+  color: #fff;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;         /* circle: border-radius equal to half the width/height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  text-decoration: none;
+  box-shadow: var(--shadow-lg);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.fixed-badge:hover {
+  transform: scale(1.1) translateY(-2px);
+  background: var(--color-secondary);
+  text-decoration: none;
+}
