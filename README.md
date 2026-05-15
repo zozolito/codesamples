@@ -34,6 +34,10 @@ If you are an experienced developer, contribute. Share the thing that took you t
 | **CSS** | 🟢 Active | Layouts, responsive design, animations, common traps |
 | **Python** | 🟢 Active | Clean code, scripting, data handling, security basics |
 | **C#** | 🟢 Active | OOP, .NET patterns, LINQ, practical examples |
+| **C** | 🟢 Active | Pointers, memory management, the stuff that actually runs your OS |
+| **C++** | 🟢 Active | OOP the hard way, RAII, templates, understanding what abstractions cost |
+| **BASIC** | 🏛️ Legacy | Where millions of people learned to code — respect the origin |
+| **COBOL** | 🏦 Critical | $3 trillion/day runs on this. Banks need you. Seriously. |
 | **FORTRAN** | 🏛️ Legacy | A tribute — because knowing where we came from matters |
 
 ---
@@ -99,6 +103,10 @@ Si tu es un développeur expérimenté, contribue. Partage ce bug qui t'a pris t
 | **CSS** | 🟢 Actif | Layouts, responsive, animations, pièges classiques |
 | **Python** | 🟢 Actif | Code propre, scripting, traitement de données, bases de sécurité |
 | **C#** | 🟢 Actif | POO, patterns .NET, LINQ, exemples pratiques |
+| **C** | 🟢 Actif | Pointeurs, gestion mémoire, ce qui fait tourner votre OS en vrai |
+| **C++** | 🟢 Actif | POO version difficile, RAII, templates, comprendre le coût des abstractions |
+| **BASIC** | 🏛️ Héritage | Là où des millions de personnes ont appris à coder — respectons l'origine |
+| **COBOL** | 🏦 Critique | 3 000 milliards $/jour tournent là-dessus. Les banques ont besoin de toi. |
 | **FORTRAN** | 🏛️ Héritage | Un hommage — parce que savoir d'où on vient, ça compte |
 
 ---
