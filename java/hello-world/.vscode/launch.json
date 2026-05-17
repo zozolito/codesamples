@@ -1,0 +1,43 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            // ─────────────────────────────────────────────────────────────────
+            // Debug HelloWorld
+            //
+            // Requires: Extension Pack for Java (Microsoft)
+            // Press F5 to start. F10 = step over. F11 = step into. F5 = continue.
+            //
+            // Set a breakpoint by clicking the gutter (left of the line number).
+            // Good places to start:
+            //   - The first line of main()
+            //   - Inside a stream lambda
+            //   - Inside describe() — observe which subclass runs it (polymorphism)
+            //   - The catch block of ItemNotFoundException
+            // ─────────────────────────────────────────────────────────────────
+            "type": "java",
+            "name": "Debug HelloWorld",
+            "request": "launch",
+            "mainClass": "HelloWorld",
+            "projectName": "hello-world",
+            "classPaths": ["${workspaceFolder}/bin"],
+            "sourcePaths": ["${workspaceFolder}/src"],
+            "preLaunchTask": "Java: Compile",
+            "console": "integratedTerminal",
+            "stopOnEntry": false
+        },
+        {
+            // Stop at first line — useful for stepping through from the very beginning
+            "type": "java",
+            "name": "Debug HelloWorld (stop on entry)",
+            "request": "launch",
+            "mainClass": "HelloWorld",
+            "projectName": "hello-world",
+            "classPaths": ["${workspaceFolder}/bin"],
+            "sourcePaths": ["${workspaceFolder}/src"],
+            "preLaunchTask": "Java: Compile",
+            "console": "integratedTerminal",
+            "stopOnEntry": true
+        }
+    ]
+}

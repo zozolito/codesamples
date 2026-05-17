@@ -1,0 +1,17 @@
+# Compiled bytecode — never commit these
+bin/
+*.class
+
+# VS Code Java project files (auto-generated)
+.classpath
+.project
+.settings/
+.factorypath
+
+# Maven / Gradle build directories (if you ever add a build tool)
+target/
+build/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,9 @@
+{
+    "recommendations": [
+        // Extension Pack for Java (Microsoft)
+        // Includes: Language Support for Java, Debugger for Java,
+        //           Test Runner for Java, Maven for Java, Project Manager for Java
+        // This is the one to install — it pulls in everything needed.
+        "vscjava.vscode-java-pack"
+    ]
+}
