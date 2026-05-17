@@ -1,0 +1,107 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "C++: Build with AddressSanitizer (recommended for learning)",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-std=c++17",
+                "-Wall",
+                "-Wextra",
+                "-Wpedantic",
+                "-g",
+                "-fsanitize=address,undefined",
+                "-fno-omit-frame-pointer",
+                "-o", "${workspaceFolder}/bin/memory",
+                "${workspaceFolder}/src/memory.cpp"
+            ],
+            "group": { "kind": "build", "isDefault": true },
+            "problemMatcher": "$gcc",
+            "presentation": { "reveal": "always", "panel": "shared" }
+        },
+        {
+            "label": "C++: Build for Valgrind (no sanitizers — Linux only)",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-std=c++17",
+                "-Wall",
+                "-Wextra",
+                "-g",
+                "-O0",
+                "-o", "${workspaceFolder}/bin/memory",
+                "${workspaceFolder}/src/memory.cpp"
+            ],
+            "group": "build",
+            "problemMatcher": "$gcc"
+        },
+        {
+            "label": "C++: Build Windows (MSVC-compatible flags)",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-std=c++17",
+                "-Wall",
+                "-g",
+                "-o", "${workspaceFolder}/bin/memory.exe",
+                "${workspaceFolder}/src/memory.cpp"
+            ],
+            "group": "build",
+            "problemMatcher": "$gcc",
+            "windows": {
+                "command": "g++",
+                "args": [
+                    "-std=c++17", "-Wall", "-g",
+                    "-o", "${workspaceFolder}/bin/memory.exe",
+                    "${workspaceFolder}/src/memory.cpp"
+                ]
+            }
+        },
+        {
+            "label": "C++: Run",
+            "type": "shell",
+            "command": "${workspaceFolder}/bin/memory",
+            "windows": { "command": "${workspaceFolder}\\bin\\memory.exe" },
+            "group": "test",
+            "dependsOn": "C++: Build with AddressSanitizer (recommended for learning)",
+            "problemMatcher": []
+        },
+        {
+            "label": "C++: Run under Valgrind (Linux)",
+            "type": "shell",
+            "command": "valgrind",
+            "args": [
+                "--leak-check=full",
+                "--show-leak-kinds=all",
+                "--track-origins=yes",
+                "--verbose",
+                "${workspaceFolder}/bin/memory"
+            ],
+            "dependsOn": "C++: Build for Valgrind (no sanitizers — Linux only)",
+            "group": "test",
+            "problemMatcher": []
+        },
+        {
+            "label": "C++: Static analysis (cppcheck)",
+            "type": "shell",
+            "command": "cppcheck",
+            "args": [
+                "--enable=all",
+                "--std=c++17",
+                "--suppress=missingIncludeSystem",
+                "${workspaceFolder}/src/"
+            ],
+            "group": "none",
+            "problemMatcher": []
+        },
+        {
+            "label": "C++: Clean",
+            "type": "shell",
+            "command": "rm -f ${workspaceFolder}/bin/memory",
+            "windows": { "command": "del /Q ${workspaceFolder}\\bin\\memory.exe" },
+            "group": "none",
+            "problemMatcher": []
+        }
+    ]
+}

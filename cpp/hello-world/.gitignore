@@ -1,0 +1,8 @@
+bin/hello
+bin/hello.exe
+bin/*.exe
+*.o
+*.d
+*.dSYM/
+.cache/
+compile_commands.json

@@ -1,0 +1,48 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "C++: Debug memory (GDB — Linux/WSL)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/memory",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}",
+            "environment": [
+                {
+                    "name": "ASAN_OPTIONS",
+                    "value": "detect_leaks=1:abort_on_error=0:print_stats=1"
+                }
+            ],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb",
+            "preLaunchTask": "C++: Build with AddressSanitizer (recommended for learning)",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Show object addresses",
+                    "text": "-interpreter-exec console \"set print address on\"",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "C++: Debug memory (LLDB — macOS)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/memory",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}",
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "preLaunchTask": "C++: Build with AddressSanitizer (recommended for learning)"
+        }
+    ]
+}

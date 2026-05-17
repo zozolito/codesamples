@@ -1,0 +1,8 @@
+bin/memory
+bin/memory.exe
+bin/*.exe
+*.o
+*.d
+*.dSYM/
+.cache/
+compile_commands.json

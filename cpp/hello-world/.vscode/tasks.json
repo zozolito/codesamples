@@ -1,0 +1,96 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "C++: Build (g++ — Linux/macOS/WSL)",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-std=c++17",
+                "-Wall",
+                "-Wextra",
+                "-Wpedantic",
+                "-g",
+                "-fsanitize=address,undefined",
+                "-o", "${workspaceFolder}/bin/hello",
+                "${workspaceFolder}/src/hello.cpp"
+            ],
+            "group": { "kind": "build", "isDefault": true },
+            "problemMatcher": "$gcc",
+            "presentation": { "reveal": "always", "panel": "shared" },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "windows": {
+                "command": "g++",
+                "args": [
+                    "-std=c++17",
+                    "-Wall",
+                    "-Wextra",
+                    "-g",
+                    "-o", "${workspaceFolder}/bin/hello.exe",
+                    "${workspaceFolder}/src/hello.cpp"
+                ],
+                "problemMatcher": "$gcc"
+            }
+        },
+        {
+            "label": "C++: Build Release (g++ — optimised, no sanitizers)",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-std=c++17",
+                "-O2",
+                "-DNDEBUG",
+                "-Wall",
+                "-o", "${workspaceFolder}/bin/hello",
+                "${workspaceFolder}/src/hello.cpp"
+            ],
+            "group": "build",
+            "problemMatcher": "$gcc",
+            "windows": {
+                "command": "g++",
+                "args": [
+                    "-std=c++17",
+                    "-O2",
+                    "-DNDEBUG",
+                    "-o", "${workspaceFolder}/bin/hello.exe",
+                    "${workspaceFolder}/src/hello.cpp"
+                ]
+            }
+        },
+        {
+            "label": "C++: Build (clang++ — Linux/macOS)",
+            "type": "shell",
+            "command": "clang++",
+            "args": [
+                "-std=c++17",
+                "-Wall",
+                "-Wextra",
+                "-g",
+                "-fsanitize=address,undefined",
+                "-o", "${workspaceFolder}/bin/hello",
+                "${workspaceFolder}/src/hello.cpp"
+            ],
+            "group": "build",
+            "problemMatcher": "$gcc"
+        },
+        {
+            "label": "C++: Run",
+            "type": "shell",
+            "command": "${workspaceFolder}/bin/hello",
+            "windows": { "command": "${workspaceFolder}/bin/hello.exe" },
+            "group": "test",
+            "dependsOn": "C++: Build (g++ — Linux/macOS/WSL)",
+            "problemMatcher": []
+        },
+        {
+            "label": "C++: Clean",
+            "type": "shell",
+            "command": "rm -f ${workspaceFolder}/bin/hello",
+            "windows": { "command": "del /Q ${workspaceFolder}\\bin\\hello.exe" },
+            "group": "none",
+            "problemMatcher": []
+        }
+    ]
+}

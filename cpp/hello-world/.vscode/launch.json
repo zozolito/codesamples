@@ -1,0 +1,44 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "C++: Debug (GDB — Linux/WSL)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/hello",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb",
+            "preLaunchTask": "C++: Build (g++ — Linux/macOS/WSL)",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for GDB",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set STL pretty-printers",
+                    "text": "-interpreter-exec console \"set print pretty on\"",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "C++: Debug (LLDB — macOS)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/hello",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "preLaunchTask": "C++: Build (clang++ — Linux/macOS)"
+        }
+    ]
+}
