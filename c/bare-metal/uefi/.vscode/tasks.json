@@ -1,0 +1,60 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "UEFI: Build (make)",
+            "type": "shell",
+            "command": "make",
+            "args": ["all"],
+            "options": { "cwd": "${workspaceFolder}" },
+            "group": { "kind": "build", "isDefault": true },
+            "problemMatcher": "$gcc",
+            "presentation": { "reveal": "always" }
+        },
+        {
+            "label": "UEFI: Run in QEMU + OVMF",
+            "type": "shell",
+            "command": "make",
+            "args": ["run"],
+            "options": { "cwd": "${workspaceFolder}" },
+            "group": "test",
+            "dependsOn": "UEFI: Build (make)",
+            "problemMatcher": []
+        },
+        {
+            "label": "UEFI: Run in QEMU (serial — no GUI)",
+            "type": "shell",
+            "command": "make",
+            "args": ["run-serial"],
+            "options": { "cwd": "${workspaceFolder}" },
+            "group": "test",
+            "problemMatcher": []
+        },
+        {
+            "label": "UEFI: Inspect EFI binary",
+            "type": "shell",
+            "command": "make",
+            "args": ["inspect"],
+            "options": { "cwd": "${workspaceFolder}" },
+            "group": "none",
+            "problemMatcher": []
+        },
+        {
+            "label": "UEFI: Install dependencies (Debian/Ubuntu)",
+            "type": "shell",
+            "command": "sudo",
+            "args": ["apt", "install", "-y", "gnu-efi", "ovmf", "qemu-system-x86"],
+            "group": "none",
+            "problemMatcher": []
+        },
+        {
+            "label": "UEFI: Clean",
+            "type": "shell",
+            "command": "make",
+            "args": ["clean"],
+            "options": { "cwd": "${workspaceFolder}" },
+            "group": "none",
+            "problemMatcher": []
+        }
+    ]
+}

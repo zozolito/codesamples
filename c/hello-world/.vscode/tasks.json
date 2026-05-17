@@ -1,0 +1,88 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "C: Build (gcc — dev + ASan)",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-std=c11",
+                "-Wall", "-Wextra", "-Wpedantic",
+                "-Wshadow", "-Wformat=2",
+                "-g",
+                "-fsanitize=address,undefined",
+                "-fstack-protector-strong",
+                "-lm",
+                "-o", "${workspaceFolder}/bin/hello",
+                "${workspaceFolder}/src/hello.c"
+            ],
+            "group": { "kind": "build", "isDefault": true },
+            "problemMatcher": "$gcc",
+            "windows": {
+                "args": [
+                    "-std=c11", "-Wall", "-Wextra", "-g",
+                    "-lm",
+                    "-o", "${workspaceFolder}/bin/hello.exe",
+                    "${workspaceFolder}/src/hello.c"
+                ]
+            }
+        },
+        {
+            "label": "C: Build Release (gcc -O2)",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-std=c11", "-Wall", "-O2", "-DNDEBUG",
+                "-lm",
+                "-o", "${workspaceFolder}/bin/hello",
+                "${workspaceFolder}/src/hello.c"
+            ],
+            "group": "build",
+            "problemMatcher": "$gcc"
+        },
+        {
+            "label": "C: Build (clang)",
+            "type": "shell",
+            "command": "clang",
+            "args": [
+                "-std=c11", "-Wall", "-Wextra",
+                "-g", "-fsanitize=address,undefined",
+                "-lm",
+                "-o", "${workspaceFolder}/bin/hello",
+                "${workspaceFolder}/src/hello.c"
+            ],
+            "group": "build",
+            "problemMatcher": "$gcc"
+        },
+        {
+            "label": "C: Run",
+            "type": "shell",
+            "command": "${workspaceFolder}/bin/hello",
+            "windows": { "command": "${workspaceFolder}/bin/hello.exe" },
+            "group": "test",
+            "dependsOn": "C: Build (gcc — dev + ASan)",
+            "problemMatcher": []
+        },
+        {
+            "label": "C: Run under Valgrind (Linux)",
+            "type": "shell",
+            "command": "valgrind",
+            "args": [
+                "--leak-check=full",
+                "--show-leak-kinds=all",
+                "--track-origins=yes",
+                "${workspaceFolder}/bin/hello"
+            ],
+            "group": "test",
+            "problemMatcher": []
+        },
+        {
+            "label": "C: Clean",
+            "type": "shell",
+            "command": "rm -f ${workspaceFolder}/bin/hello",
+            "windows": { "command": "del /Q ${workspaceFolder}\\bin\\hello.exe" },
+            "group": "none",
+            "problemMatcher": []
+        }
+    ]
+}

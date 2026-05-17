@@ -1,0 +1,67 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "ASM: Assemble bootloader (NASM)",
+            "type": "shell",
+            "command": "nasm",
+            "args": [
+                "-f", "bin",
+                "${workspaceFolder}/src/boot.asm",
+                "-o", "${workspaceFolder}/bin/boot.bin",
+                "-l", "${workspaceFolder}/bin/boot.lst"
+            ],
+            "group": { "kind": "build", "isDefault": true },
+            "problemMatcher": [],
+            "presentation": { "reveal": "always" }
+        },
+        {
+            "label": "ASM: Run in QEMU (VGA window)",
+            "type": "shell",
+            "command": "qemu-system-x86_64",
+            "args": [
+                "-drive", "format=raw,file=${workspaceFolder}/bin/boot.bin,if=ide,media=disk",
+                "-boot", "order=c",
+                "-m", "128M",
+                "-no-reboot"
+            ],
+            "group": "test",
+            "dependsOn": "ASM: Assemble bootloader (NASM)",
+            "problemMatcher": []
+        },
+        {
+            "label": "ASM: Run in QEMU (curses — terminal only)",
+            "type": "shell",
+            "command": "qemu-system-x86_64",
+            "args": [
+                "-drive", "format=raw,file=${workspaceFolder}/bin/boot.bin,if=ide,media=disk",
+                "-boot", "order=c",
+                "-m", "128M",
+                "-display", "curses",
+                "-no-reboot"
+            ],
+            "group": "test",
+            "dependsOn": "ASM: Assemble bootloader (NASM)",
+            "problemMatcher": []
+        },
+        {
+            "label": "ASM: Inspect binary (xxd + ndisasm)",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "-c",
+                "echo '=== Boot signature (last 4 bytes) ===' && xxd -s 508 ${workspaceFolder}/bin/boot.bin && echo '' && echo '=== Disassembly (16-bit) ===' && ndisasm -b 16 ${workspaceFolder}/bin/boot.bin | head -50"
+            ],
+            "group": "none",
+            "dependsOn": "ASM: Assemble bootloader (NASM)",
+            "problemMatcher": []
+        },
+        {
+            "label": "ASM: Clean",
+            "type": "shell",
+            "command": "rm -rf ${workspaceFolder}/bin",
+            "group": "none",
+            "problemMatcher": []
+        }
+    ]
+}
