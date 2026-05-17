@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Examples — CodeSamples</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         NAVIGATION
+         A fixed sidebar listing every concept section.
+         JS adds .active to the link whose section is currently in view
+         (IntersectionObserver — see main.js § Performance).
+    ════════════════════════════════════════════════════════════════════════ -->
+    <nav id="sidebar" aria-label="Concept navigation">
+        <div class="nav-header">
+            <span class="nav-logo">JS</span>
+            <h1>JavaScript<br><small>Examples</small></h1>
+        </div>
+        <ul class="nav-list">
+            <li><a href="#variables">Variables &amp; Scope</a></li>
+            <li><a href="#types">Types &amp; Coercion</a></li>
+            <li><a href="#functions">Functions</a></li>
+            <li><a href="#objects">Objects</a></li>
+            <li><a href="#arrays">Arrays</a></li>
+            <li><a href="#destructuring">Destructuring</a></li>
+            <li><a href="#spread-rest">Spread &amp; Rest</a></li>
+            <li><a href="#template-literals">Template Literals</a></li>
+            <li><a href="#classes">Classes</a></li>
+            <li><a href="#closures">Closures</a></li>
+            <li><a href="#promises">Promises</a></li>
+            <li><a href="#async-await">Async / Await</a></li>
+            <li><a href="#dom">DOM Manipulation</a></li>
+            <li><a href="#events">Events</a></li>
+            <li><a href="#errors">Error Handling</a></li>
+            <li><a href="#optional-chaining">Optional Chaining</a></li>
+            <li><a href="#storage">Storage</a></li>
+            <li><a href="#security">Security Pitfalls</a></li>
+            <li><a href="#performance">Performance</a></li>
+        </ul>
+    </nav>
+
+    <main id="content">
+
+        <!-- ─── Page header ──────────────────────────────────────────────── -->
+        <header class="page-header">
+            <h1>JavaScript <span>Examples</span></h1>
+            <p>
+                Every section below runs real JavaScript and shows you the code behind it.
+                Open the browser console — <kbd>F12</kbd> — to see extra output.
+            </p>
+            <p class="disclaimer">
+                Part of <a href="../../README.md">CodeSamples</a> — read the code, don't just run it.
+            </p>
+        </header>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             § 1 — VARIABLES & SCOPE
+        ════════════════════════════════════════════════════════════════ -->
+        <section id="variables" class="concept-section">
+            <h2><span class="section-num">01</span> Variables &amp; Scope</h2>
+            <p>
+                Three keywords: <code>var</code>, <code>let</code>, <code>const</code>.
+                They differ in <strong>scope</strong>, <strong>hoisting</strong>, and whether they can be reassigned.
+                In modern JavaScript, the rule is simple: <strong>const by default, let when you need to reassign, never var</strong>.
+            </p>
+
+            <div class="demo-area">
+                <div class="output-panel" id="out-variables" aria-live="polite" aria-label="Variables demo output"></div>
+                <button class="btn" data-demo="variables">Run demo</button>
+            </div>
+
+            <pre><code class="js">// const — block-scoped, cannot be reassigned
+const PI = 3.14159;
+// PI = 3; // TypeError: Assignment to constant variable
+
+// const with objects — the BINDING is constant, not the contents
+const user = { name: "Alice" };
+user.name = "Bob"; // ✅ OK — mutating the object
+// user = {};      // ❌ TypeError
+
+// let — block-scoped, can be reassigned
+let score = 0;
+score += 10;
+
+// var — function-scoped, hoisted (avoid!)
+function demoVar() {
+    console.log(x); // undefined (hoisted, not ReferenceError)
+    var x = 5;
+    if (true) {
+        var x = 99; // same variable — overwrites!
+    }
+    console.log(x); // 99 — surprising
+}
+
+// Temporal Dead Zone (TDZ) — let/const before declaration
+function demoTDZ() {
+    // console.log(y); // ReferenceError: Cannot access 'y' before initialisation
+    let y = 10;
+    console.log(y); // 10
+}
+
+// Block scope — let/const stay inside their block
+{
+    let blockScoped = "only here";
+    const alsoLocal = true;
+}
+// console.log(blockScoped); // ReferenceError</code></pre>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             § 2 — TYPES & COERCION
+        ════════════════════════════════════════════════════════════════ -->
+        <section id="types" class="concept-section">
+            <h2><span class="section-num">02</span> Types &amp; Coercion</h2>
+            <p>
+                JavaScript has 7 primitive types and 1 object type. It also silently converts
+                between types — this is called <strong>type coercion</strong>, and it is the source of
+                some of the most baffling bugs in the language.
+            </p>
+
+            <div class="demo-area">
+                <div class="output-panel" id="out-types" aria-live="polite"></div>
+                <button class="btn" data-demo="types">Run demo</button>
+            </div>
+
+            <pre><code class="js">// typeof — what type is this?
+typeof undefined   // "undefined"
+typeof null        // "object"  ← famous bug, kept for compatibility
+typeof true        // "boolean"
+typeof 42          // "number"
+typeof 42n         // "bigint"
+typeof "hello"     // "string"
+typeof Symbol()    // "symbol"
+typeof {}          // "object"
+typeof []          // "object"  ← arrays are objects!
+typeof function(){} // "function"
+
+// Strict vs loose equality
+1   == "1"    // true  (coercion converts "1" to 1)
+1   === "1"   // false (different types, no coercion)
+0   == false  // true  (both coerce to 0)
+0   === false // false
+null == undefined  // true (special case)
+NaN === NaN   // false — NaN is never equal to anything
+
+// Always use === — use Number.isNaN() for NaN checks
+Number.isNaN(NaN);    // true
+Number.isNaN("hello"); // false (unlike global isNaN which coerces)
+
+// Explicit conversion
+Number("42")      // 42
+Number("")        // 0    ← surprising
+Number("abc")     // NaN
+Number(true)      // 1
+Number(null)      // 0    ← surprising
+Number(undefined) // NaN
+
+// Falsy values — the complete list
+// false, 0, -0, 0n, "", '', ``, null, undefined, NaN
+// Everything else is truthy — including "0", "false", [], {}</code></pre>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             § 3 — FUNCTIONS
+        ════════════════════════════════════════════════════════════════ -->
+        <section id="functions" class="concept-section">
+            <h2><span class="section-num">03</span> Functions</h2>
+            <p>
+                Functions are <strong>first-class citizens</strong> in JavaScript: they can be stored in
+                variables, passed as arguments, and returned from other functions.
+                There are several ways to define them — each with subtle differences.
+            </p>
+
+            <div class="demo-area">
+                <div class="output-panel" id="out-functions" aria-live="polite"></div>
+                <button class="btn" data-demo="functions">Run demo</button>
+            </div>
+
+            <pre><code class="js">// Function Declaration — hoisted, callable before definition
+greet("Alice"); // Works!
+function greet(name) { return `Hello, ${name}!`; }
+
+// Function Expression — NOT hoisted
+const sayHi = function(name) { return `Hi, ${name}!`; };
+
+// Arrow Function — no own `this`, `arguments`, or `prototype`
+const double  = x => x * 2;             // single param, implicit return
+const add     = (a, b) => a + b;         // multiple params
+const getObj  = x => ({ value: x });     // return object — needs parens
+
+// Default Parameters
+function createUser(name, role = "viewer", active = true) {
+    return { name, role, active };
+}
+createUser("Alice");          // { name: "Alice", role: "viewer", active: true }
+createUser("Bob", "admin");   // { name: "Bob", role: "admin", active: true }
+
+// Rest Parameters — collects remaining args into a real array
+function sum(label, ...numbers) {
+    const total = numbers.reduce((acc, n) => acc + n, 0);
+    return `${label}: ${total}`;
+}
+sum("Total", 1, 2, 3, 4, 5); // "Total: 15"
+
+// IIFE — Immediately Invoked Function Expression
+// Creates a private scope. Used before ES Modules existed.
+const counter = (function() {
+    let count = 0;
+    return {
+        increment() { count++; },
+        value()     { return count; }
+    };
+})();
+counter.increment();
+counter.value(); // 1</code></pre>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             § 4 — OBJECTS
+        ════════════════════════════════════════════════════════════════ -->
+        <section id="objects" class="concept-section">
+            <h2><span class="section-num">04</span> Objects</h2>
+            <p>
+                Objects are the fundamental building block. They are collections of key-value pairs
+                where values can be any type — including other objects or functions (then called <em>methods</em>).
+            </p>
+
+            <div class="demo-area">
+                <div class="output-panel" id="out-objects" aria-live="polite"></div>
+                <button class="btn" data-demo="objects">Run demo</button>
+            </div>
+
+            <pre><code class="js">// Object literal
+const car = {
+    make: "Toyota",
+    model: "Corolla",
+    year: 2023,
+    describe() {                       // method shorthand (ES6)
+        return `${this.year} ${this.make} ${this.model}`;
+    },
+};
+
+// Property shorthand — when variable name matches key name
+const name = "Alice";
+const age  = 30;
+const user = { name, age }; // same as { name: name, age: age }
+
+// Computed property names
+const field = "email";
+const record = { [`user_${field}`]: "alice@example.com" };
+// { user_email: "alice@example.com" }
+
+// Reading all properties
+Object.keys(user)    // ["name", "age"]
+Object.values(user)  // ["Alice", 30]
+Object.entries(user) // [["name", "Alice"], ["age", 30]]
+
+// Shallow copy with spread
+const copy   = { ...user };
+const merged = { ...user, role: "admin", age: 31 }; // age is overwritten
+
+// Object.freeze — prevents mutations (shallow)
+const config = Object.freeze({ maxRetries: 3, timeout: 5000 });
+config.maxRetries = 99; // silently ignored in sloppy mode, throws in strict</code></pre>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             § 5 — ARRAYS
+        ════════════════════════════════════════════════════════════════ -->
+        <section id="arrays" class="concept-section">
+            <h2><span class="section-num">05</span> Arrays</h2>
+            <p>
+                JavaScript arrays are dynamic, typed by element, and come with a rich set
+                of iteration methods. The most important rule: prefer methods that <strong>return new arrays</strong>
+                over those that mutate the original.
+            </p>
+
+            <div class="demo-area">
+                <div class="output-panel" id="out-arrays" aria-live="polite"></div>
+                <button class="btn" data-demo="arrays">Run demo</button>
+            </div>
+
+            <pre><code class="js">const numbers = [3, 1, 4, 1, 5, 9, 2, 6];
+
+// map — transform, same length, new array
+const doubled = numbers.map(n => n * 2);       // [6, 2, 8, 2, 10, 18, 4, 12]
+
+// filter — keep where true, new array
+const evens   = numbers.filter(n => n % 2 === 0); // [4, 2, 6]
+
+// reduce — fold into one value
+const sum     = numbers.reduce((acc, n) => acc + n, 0); // 31
+
+// find / findIndex — first match (or undefined / -1)
+const firstBig = numbers.find(n => n > 5);      // 9
+const idx      = numbers.findIndex(n => n > 5); // 5
+
+// some / every — boolean checks
+const hasBig  = numbers.some(n => n > 8);   // true
+const allPos  = numbers.every(n => n > 0);  // true
+
+// ⚠️ Default sort converts to strings — always pass a comparator for numbers!
+[10, 9, 2, 1, 100].sort()            // [1, 10, 100, 2, 9] ← WRONG
+[10, 9, 2, 1, 100].sort((a, b) => a - b) // [1, 2, 9, 10, 100] ← correct
+
+// flat & flatMap
+[[1, 2], [3, [4, 5]]].flat()    // [1, 2, 3, [4, 5]]
+[[1, 2], [3, [4, 5]]].flat(2)   // [1, 2, 3, 4, 5]
+["hello world"].flatMap(s => s.split(" ")); // ["hello", "world"]
+
+// Create arrays
+Array.from({ length: 5 }, (_, i) => i * 2) // [0, 2, 4, 6, 8]
+[...new Set([1, 2, 2, 3, 3])]              // [1, 2, 3] — deduplicate</code></pre>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             § 6 — DESTRUCTURING
+        ════════════════════════════════════════════════════════════════ -->
+        <section id="destructuring" class="concept-section">
+            <h2><span class="section-num">06</span> Destructuring</h2>
+            <p>
+                Destructuring is syntactic sugar for extracting values from arrays or objects
+                into named variables. It makes code significantly more readable.
+            </p>
+
+            <div class="demo-area">
+                <div class="output-panel" id="out-destructuring" aria-live="polite"></div>
+                <button class="btn" data-demo="destructuring">Run demo</button>
+            </div>
+
+            <pre><code class="js">// ── Array Destructuring ──────────────────────────────────────────────
+const [first, second, , fourth] = [10, 20, 30, 40]; // skip with ,,
+// first = 10, second = 20, fourth = 40
+
+// Default values
+const [a = 0, b = 0] = [1]; // a = 1, b = 0 (default used)
+
+// Swap two variables — no temp needed
+let x = 1, y = 2;
+[x, y] = [y, x]; // x = 2, y = 1
+
+// Rest in destructuring
+const [head, ...tail] = [1, 2, 3, 4]; // head = 1, tail = [2, 3, 4]
+
+// ── Object Destructuring ─────────────────────────────────────────────
+const { name, age } = { name: "Alice", age: 30, role: "admin" };
+// role is just ignored — no error
+
+// Rename on extraction
+const { name: userName, age: userAge } = { name: "Bob", age: 25 };
+
+// Default values
+const { host = "localhost", port = 3000 } = { port: 8080 };
+// host = "localhost" (default), port = 8080 (from object)
+
+// Nested destructuring
+const { address: { city, country } } = {
+    address: { city: "Paris", country: "France" }
+};
+
+// ── In function parameters ───────────────────────────────────────────
+function renderUser({ name, age = 0, role = "guest" }) {
+    return `${name} (${age}) — ${role}`;
+}
+renderUser({ name: "Alice", age: 30 }); // "Alice (30) — guest"</code></pre>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             § 7 — SPREAD & REST
+        ════════════════════════════════════════════════════════════════ -->
+        <section id="spread-rest" class="concept-section">
+            <h2><span class="section-num">07</span> Spread &amp; Rest</h2>
+            <p>
+                The same <code>...</code> syntax serves two opposite roles:
+                <strong>spread</strong> expands an iterable into individual elements,
+                <strong>rest</strong> collects individual elements into an array.
+                Context determines which one is happening.
+            </p>
+
+            <div class="demo-area">
+                <div class="output-panel" id="out-spread-rest" aria-live="polite"></div>
+                <button class="btn" data-demo="spread-rest">Run demo</button>
+            </div>
+
+            <pre><code class="js">// ── SPREAD — expands ─────────────────────────────────────────────────
+
+// Merge arrays
+const a = [1, 2, 3];
+const b = [4, 5, 6];
+const merged = [...a, ...b];   // [1, 2, 3, 4, 5, 6]
+const copy   = [...a];         // shallow copy (no reference shared)
+
+// Insert in the middle
+const withMiddle = [...a, 99, ...b]; // [1, 2, 3, 99, 4, 5, 6]
+
+// Merge objects (right side wins on duplicate keys)
+const defaults  = { theme: "dark", lang: "en", size: "md" };
+const overrides = { lang: "fr", size: "lg" };
+const config    = { ...defaults, ...overrides };
+// { theme: "dark", lang: "fr", size: "lg" }
+
+// Pass array as function arguments
+Math.max(...[3, 1, 4, 1, 5, 9]); // 9
+
+// ── REST — collects ──────────────────────────────────────────────────
+
+// Collect remaining function arguments
+function log(level, ...messages) {
+    return messages.map(m => `[${level}] ${m}`);
+}
+log("INFO", "Server started", "Port 3000");
+// ["[INFO] Server started", "[INFO] Port 3000"]
+
+// Collect remaining object properties (useful "omit a property" pattern)
+const { id, ...rest } = { id: 1, name: "Alice", role: "admin" };
+// id = 1, rest = { name: "Alice", role: "admin" }
+// This is the cleanest way to create a copy without a specific key</code></pre>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             § 8 — TEMPLATE LITERALS
+        ════════════════════════════════════════════════════════════════ -->
+        <section id="template-literals" class="concept-section">
+            <h2><span class="section-num">08</span> Template Literals</h2>
+            <p>
+                Template literals (backtick strings) support multiline text, embedded expressions,
+                and tagged templates — a powerful feature used by libraries like styled-components and GraphQL.
+            </p>
+
+            <div class="demo-area">
+                <div class="output-panel" id="out-template-literals" aria-live="polite"></div>
+                <button class="btn" data-demo="template-literals">Run demo</button>
+            </div>
+
+            <pre><code class="js">// Basic interpolation
+const name  = "World";
+const score = 98;
+const msg   = `Hello, ${name}! Score: ${score}/100`;
+
+// Any expression works inside ${ }
+const result = `2 + 2 = ${2 + 2}`;
+const list   = `Items: ${[1, 2, 3].join(", ")}`;
+
+// Multi-line strings — no \n needed
+const html = `
+    &lt;div class="card"&gt;
+        &lt;h2&gt;${name}&lt;/h2&gt;
+        &lt;p&gt;Score: ${score}&lt;/p&gt;
+    &lt;/div&gt;
+`;
+
+// ── Tagged Templates ─────────────────────────────────────────────────
+// A function is called with the template's parts.
+// Used for sanitisation, i18n, SQL builders, styled-components...
+
+function highlight(strings, ...values) {
+    return strings.reduce((result, str, i) => {
+        const val = values[i] !== undefined
+            ? `&lt;mark&gt;${values[i]}&lt;/mark&gt;`
+            : "";
+        return result + str + val;
+    }, "");
+}
+
+const user  = "Alice";
+const pts   = 250;
+const html2 = highlight`Player ${user} earned ${pts} points.`;
+// "Player &lt;mark&gt;Alice&lt;/mark&gt; earned &lt;mark&gt;250&lt;/mark&gt; points."
+
+// String.raw — preserves backslashes (useful for regex, Windows paths)
+const path  = String.raw`C:\Users\Alice\Documents`;
+// "C:\Users\Alice\Documents" — no escape processing</code></pre>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             § 9 — CLASSES
+        ════════════════════════════════════════════════════════════════ -->
+        <section id="classes" class="concept-section">
+            <h2><span class="section-num">09</span> Classes</h2>
+            <p>
+                ES6 classes are syntactic sugar over JavaScript's prototype-based inheritance.
+                The prototype chain still exists under the hood — but classes give it a cleaner
+                face. Private fields (<code>#field</code>) are truly private since ES2022.
+            </p>
+
+            <div class="demo-area">
+                <div class="output-panel" id="out-classes" aria-live="polite"></div>
+                <button class="btn" data-demo="classes">Run demo</button>
+            </div>
+
+            <pre><code class="js">class Animal {
+    #name;                      // Private field — truly inaccessible outside
+    #sound;
+
+    constructor(name, sound) {
+        this.#name  = name;
+        this.#sound = sound;
+    }
+
+    get name() { return this.#name; }   // getter — access like a property
+
+    speak() {
+        return `${this.#name} says ${this.#sound}!`;
+    }
+
+    static kingdom() { return "Animalia"; }  // called on the CLASS, not instance
+}
+
+class Dog extends Animal {
+    #tricks = [];                       // field initialiser
+
+    constructor(name) {
+        super(name, "Woof");            // MUST call super() before using `this`
+    }
+
+    learn(trick) { this.#tricks.push(trick); }
+
+    get knownTricks() { return [...this.#tricks]; }  // return a copy
+
+    speak() {                           // override parent method
+        return `${super.speak()} (tail wagging)`;
+    }
+}
+
+const dog = new Dog("Rex");
+dog.learn("sit");
+dog.learn("paw");
+dog.speak();           // "Rex says Woof! (tail wagging)"
+dog.knownTricks;       // ["sit", "paw"]
+Animal.kingdom();      // "Animalia"
+// dog.#tricks         // SyntaxError — truly private</code></pre>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             § 10 — CLOSURES
+        ════════════════════════════════════════════════════════════════ -->
+        <section id="closures" class="concept-section">
+            <h2><span class="section-num">10</span> Closures</h2>
+            <p>
+                A closure is a function that remembers the variables from its enclosing scope
+                even after that scope has finished executing. Closures enable private state,
+                factory functions, and module patterns.
+            </p>
+
+            <div class="demo-area">
+                <div class="output-panel" id="out-closures" aria-live="polite"></div>
+                <button class="btn" data-demo="closures">Run demo</button>
+            </div>
+
+            <pre><code class="js">// makeCounter — private state via closure
+function makeCounter(start = 0) {
+    let count = start; // captured — not accessible from outside
+
+    return {
+        increment() { count++; },
+        decrement() { count--; },
+        value()     { return count; },
+        reset()     { count = start; },
+    };
+}
+
+const c1 = makeCounter(10);
+const c2 = makeCounter(0);   // independent counter, own `count`
+c1.increment();
+c1.increment();
+c2.increment();
+c1.value(); // 12
+c2.value(); // 1
+
+// Factory function — closure captures `factor`
+function makeMultiplier(factor) {
+    return (n) => n * factor;
+}
+const double = makeMultiplier(2);
+const triple = makeMultiplier(3);
+double(5); // 10
+triple(5); // 15
+
+// Classic pitfall — var in a loop (all share the same `i`)
+const fns_bad = [];
+for (var i = 0; i &lt; 3; i++) {
+    fns_bad.push(() => i); // captures the same `i`
+}
+fns_bad[0](); // 3 — not 0!
+
+// Fix: use let (block-scoped, fresh binding per iteration)
+const fns_good = [];
+for (let i = 0; i &lt; 3; i++) {
+    fns_good.push(() => i);
+}
+fns_good[0](); // 0 ✅
+fns_good[1](); // 1 ✅</code></pre>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             § 11 — PROMISES
+        ════════════════════════════════════════════════════════════════ -->
+        <section id="promises" class="concept-section">
+            <h2><span class="section-num">11</span> Promises</h2>
+            <p>
+                A Promise represents a future value. It can be <em>pending</em>, <em>fulfilled</em>, or <em>rejected</em>.
+                Promises replaced callback hell and are the foundation of <code>async/await</code>.
+            </p>
+
+            <div class="demo-area">
+                <div class="output-panel" id="out-promises" aria-live="polite"></div>
+                <button class="btn" data-demo="promises">Run demo</button>
+            </div>
+
+            <pre><code class="js">// Creating a Promise
+function delay(ms, value) {
+    return new Promise((resolve, reject) => {
+        if (ms &lt; 0) {
+            reject(new Error("Negative delay"));
+            return;
+        }
+        setTimeout(() => resolve(value), ms);
+    });
+}
+
+// Consuming with .then / .catch / .finally
+delay(100, "hello")
+    .then(val => {
+        console.log("Got:", val);  // "Got: hello"
+        return val.toUpperCase();  // returned value flows to next .then
+    })
+    .then(upper => console.log("Upper:", upper))
+    .catch(err  => console.error("Error:", err.message))
+    .finally(()  => console.log("Always runs"));
+
+// Promise.all — all must succeed (fails fast on first rejection)
+Promise.all([delay(50, "A"), delay(80, "B"), delay(30, "C")])
+    .then(([a, b, c]) => console.log("All:", a, b, c));
+    // resolves in ~80ms (longest), order preserved
+
+// Promise.allSettled — waits for all, gives each outcome
+Promise.allSettled([delay(50, "ok"), Promise.reject("fail")])
+    .then(results => {
+        // [{ status: "fulfilled", value: "ok" },
+        //  { status: "rejected",  reason: "fail" }]
+    });
+
+// Promise.race — first to settle (resolve or reject) wins
+const timeout = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error("Timeout")), 5000)
+);
+Promise.race([delay(100, "data"), timeout])
+    .then(v  => console.log("Won race:", v))
+    .catch(e => console.error("Timed out"));
+
+// Promise.any — first to RESOLVE wins (ignores rejections)
+Promise.any([Promise.reject("no"), delay(100, "yes")])
+    .then(v => console.log("Any:", v)); // "yes"</code></pre>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             § 12 — ASYNC / AWAIT
+        ════════════════════════════════════════════════════════════════ -->
+        <section id="async-await" class="concept-section">
+            <h2><span class="section-num">12</span> Async / Await</h2>
+            <p>
+                <code>async/await</code> is syntactic sugar over Promises.
+                An <code>async</code> function always returns a Promise.
+                <code>await</code> pauses execution of that function until the Promise settles.
+                It does <strong>not</strong> block the main thread.
+            </p>
+
+            <div class="demo-area">
+                <div class="output-panel" id="out-async-await" aria-live="polite"></div>
+                <button class="btn" data-demo="async-await">Run demo</button>
+            </div>
+
+            <pre><code class="js">function delay(ms, value) {
+    return new Promise(resolve => setTimeout(() => resolve(value), ms));
+}
+
+// Basic async/await with error handling
+async function loadData(id) {
+    try {
+        const item = await delay(100, { id, name: "Item " + id });
+        const meta = await delay(50, { created: "2025-01-01" }); // sequential
+        return { ...item, ...meta };
+    } catch (err) {
+        console.error("Load failed:", err.message);
+        throw err; // re-throw so caller can handle
+    } finally {
+        console.log("loadData done (always)");
+    }
+}
+
+// Sequential vs Parallel
+async function compareApproaches() {
+    console.time("sequential");
+    const a = await delay(100, "A");   // wait 100ms
+    const b = await delay(100, "B");   // then wait 100ms = 200ms total
+    console.timeEnd("sequential");
+
+    console.time("parallel");
+    const [c, d] = await Promise.all([  // both run at the same time = ~100ms
+        delay(100, "C"),
+        delay(100, "D"),
+    ]);
+    console.timeEnd("parallel");
+
+    return { sequential: [a, b], parallel: [c, d] };
+}
+
+// Async immediately invoked
+(async () => {
+    const data = await loadData(42);
+    console.log("Loaded:", data);
+
+    const result = await compareApproaches();
+    console.log("Results:", result);
+})();</code></pre>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             § 13 — DOM MANIPULATION
+        ════════════════════════════════════════════════════════════════ -->
+        <section id="dom" class="concept-section">
+            <h2><span class="section-num">13</span> DOM Manipulation</h2>
+            <p>
+                The DOM (Document Object Model) is the live tree of all elements on the page.
+                JavaScript can read and modify it. The most important performance rule:
+                <strong>batch your DOM updates</strong> — a DocumentFragment lets you build
+                a subtree in memory and insert it all at once.
+            </p>
+
+            <div class="demo-area">
+                <div id="dom-target" class="dom-target" aria-label="DOM manipulation target area">
+                    <p class="placeholder-text">Click the button to build this area with JavaScript.</p>
+                </div>
+                <div class="btn-row">
+                    <button class="btn" id="btn-dom-build">Build DOM</button>
+                    <button class="btn btn-secondary" id="btn-dom-clear">Clear</button>
+                </div>
+            </div>
+
+            <pre><code class="js">const target = document.querySelector("#dom-target");
+
+// Create elements
+const h3 = document.createElement("h3");
+h3.textContent = "Built with JavaScript"; // ✅ safe — no HTML parsing
+
+const list = document.createElement("ul");
+list.className = "generated-list";
+
+// DocumentFragment — build in memory, then insert once (performance!)
+const fragment = document.createDocumentFragment();
+const items = ["querySelector", "createElement", "append", "classList", "dataset"];
+
+items.forEach((text, i) => {
+    const li = document.createElement("li");
+    li.textContent = text;
+    li.dataset.index = i;         // → data-index="0" attribute
+    li.classList.add("list-item");
+    fragment.append(li);
+});
+
+list.append(fragment);  // single DOM update
+
+// Inserting
+target.append(h3, list); // append accepts multiple nodes
+
+// Modifying after insertion
+list.querySelector("[data-index='0']").classList.add("highlight");
+
+// innerHTML — ⚠️ NEVER use with user data (XSS risk)
+// Using it here because the content is 100% developer-controlled:
+const note = document.createElement("p");
+note.innerHTML = `&lt;em&gt;Note:&lt;/em&gt; Never use &lt;code&gt;innerHTML&lt;/code&gt; with user input.`;
+target.append(note);
+
+// Reading layout info
+const rect = target.getBoundingClientRect();
+// { top, left, width, height, bottom, right }</code></pre>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             § 14 — EVENTS
+        ════════════════════════════════════════════════════════════════ -->
+        <section id="events" class="concept-section">
+            <h2><span class="section-num">14</span> Events</h2>
+            <p>
+                Events are how the browser tells your code that something happened.
+                The most powerful pattern is <strong>event delegation</strong>: attach one
+                listener to a parent instead of many listeners to each child.
+                It works for dynamically added elements and uses less memory.
+            </p>
+
+            <div class="demo-area">
+                <div class="event-demo-area">
+                    <div id="event-log-container">
+                        <p class="event-hint">Interact with the elements below ↓</p>
+                        <div id="event-log" aria-live="polite" aria-label="Event log"></div>
+                    </div>
+                    <div class="event-controls">
+                        <button class="btn event-btn" data-action="click-demo">Click me</button>
+                        <input type="text" id="event-input" placeholder="Type here..." class="event-input" />
+                        <ul id="event-list" class="event-list">
+                            <li data-id="1">Item 1 (delegate)</li>
+                            <li data-id="2">Item 2 (delegate)</li>
+                            <li data-id="3">Item 3 (delegate)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <pre><code class="js">// addEventListener
+const btn = document.querySelector("#event-btn");
+btn.addEventListener("click", (event) => {
+    // event.target     — element that was actually clicked
+    // event.currentTarget — element listener is attached to
+    console.log("Clicked:", event.target);
+});
+
+// removeEventListener — must pass the exact same function reference
+function handler() { console.log("handled"); }
+btn.addEventListener("click", handler);
+btn.removeEventListener("click", handler); // ✅ same reference, cleanly removed
+
+// Event Delegation — one listener on the parent handles all children
+// Works for dynamically added elements too
+document.querySelector("#event-list").addEventListener("click", (event) => {
+    const item = event.target.closest("li"); // walk up to find matching ancestor
+    if (!item) return;                        // click wasn't on an li
+    console.log("List item clicked:", item.dataset.id);
+});
+
+// Keyboard events — use event.key (not deprecated keyCode)
+document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeModal();
+    if (event.key === "Enter" && event.ctrlKey) submitForm();
+});
+
+// Custom Events
+const myEvent = new CustomEvent("data-ready", {
+    detail:  { count: 42 },
+    bubbles: true,
+});
+document.dispatchEvent(myEvent);
+document.addEventListener("data-ready", (e) => console.log(e.detail.count));</code></pre>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             § 15 — ERROR HANDLING
+        ════════════════════════════════════════════════════════════════ -->
+        <section id="errors" class="concept-section">
+            <h2><span class="section-num">15</span> Error Handling</h2>
+            <p>
+                JavaScript has synchronous errors (caught with <code>try/catch</code>) and
+                asynchronous errors (caught with <code>.catch()</code> or <code>try/catch</code> inside <code>async</code>).
+                Custom error classes make it easy to distinguish between error types and handle
+                them appropriately.
+            </p>
+
+            <div class="demo-area">
+                <div class="output-panel" id="out-errors" aria-live="polite"></div>
+                <button class="btn" data-demo="errors">Run demo</button>
+            </div>
+
+            <pre><code class="js">// try / catch / finally
+function parseJSON(str) {
+    try {
+        return JSON.parse(str);
+    } catch (err) {
+        // err.name, err.message, err.stack
+        console.error(`Parse failed [${err.name}]: ${err.message}`);
+        return null;
+    } finally {
+        // Runs ALWAYS — even if try returns or catch re-throws
+        console.log("parseJSON finished");
+    }
+}
+parseJSON('{"ok": true}');  // { ok: true }
+parseJSON("not json");      // logs error, returns null
+
+// Custom error classes
+class AppError extends Error {
+    constructor(message, code) {
+        super(message);
+        this.name = "AppError";
+        this.code = code;
+    }
+}
+
+class ValidationError extends AppError {
+    constructor(field, message) {
+        super(message, "VALIDATION_ERROR");
+        this.name  = "ValidationError";
+        this.field = field;
+    }
+}
+
+// Handling different error types
+try {
+    throw new ValidationError("email", "Invalid email format");
+} catch (err) {
+    if (err instanceof ValidationError) {
+        console.error(`Field '${err.field}': ${err.message}`);
+    } else if (err instanceof AppError) {
+        console.error(`App error [${err.code}]: ${err.message}`);
+    } else {
+        throw err; // always re-throw unknown errors!
+    }
+}
+
+// Async error handling
+async function fetchData(url) {
+    try {
+        const res = await fetch(url);
+        if (!res.ok) throw new AppError(`HTTP ${res.status}`, "HTTP_ERROR");
+        return res.json();
+    } catch (err) {
+        if (err instanceof AppError) throw err;
+        throw new AppError(err.message, "NETWORK_ERROR");
+    }
+}</code></pre>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             § 16 — OPTIONAL CHAINING & NULLISH COALESCING
+        ════════════════════════════════════════════════════════════════ -->
+        <section id="optional-chaining" class="concept-section">
+            <h2><span class="section-num">16</span> Optional Chaining &amp; Nullish Coalescing</h2>
+            <p>
+                Two operators that make working with potentially absent values much safer and cleaner.
+                <code>?.</code> short-circuits to <code>undefined</code> instead of throwing.
+                <code>??</code> provides a default only for <code>null</code>/<code>undefined</code>
+                — unlike <code>||</code>, it doesn't trigger for <code>0</code> or <code>""</code>.
+            </p>
+
+            <div class="demo-area">
+                <div class="output-panel" id="out-optional-chaining" aria-live="polite"></div>
+                <button class="btn" data-demo="optional-chaining">Run demo</button>
+            </div>
+
+            <pre><code class="js">const user = {
+    profile: {
+        address: { city: "Paris" }
+    },
+    getName() { return "Alice"; }
+};
+
+// Optional chaining (?.) — short-circuit to undefined instead of throwing
+user.profile?.address?.city;   // "Paris"
+user.contact?.phone;           // undefined (no throw)
+user.settings?.theme?.color;   // undefined
+
+// Works with method calls and array access
+user.getName?.();              // "Alice" — called only if exists
+user.getName?.().toUpperCase(); // "ALICE"
+const arr = null;
+arr?.[0];                      // undefined (no throw)
+
+// Nullish coalescing (??) — default only for null/undefined
+const port  = null;
+const port1 = port ?? 3000;   // 3000 (null → use default)
+const port2 = 0   ?? 3000;   // 0    (0 is NOT null/undefined — keep 0!)
+
+// ⚠️ The OR trap
+const port3 = 0   || 3000;   // 3000 (0 is falsy — WRONG if 0 is valid!)
+// Use ?? when 0, "", or false are legitimate values.
+
+// Nullish assignment (??=)
+const config = { theme: null, lang: "fr" };
+config.theme ??= "dark"; // assigns "dark" because theme is null
+config.lang  ??= "en";   // unchanged — "fr" is not null/undefined
+// config = { theme: "dark", lang: "fr" }
+
+// Combining ?.  and ??
+const displayName = user.profile?.nickname ?? user.getName?.() ?? "Anonymous";</code></pre>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             § 17 — STORAGE
+        ════════════════════════════════════════════════════════════════ -->
+        <section id="storage" class="concept-section">
+            <h2><span class="section-num">17</span> Storage</h2>
+            <p>
+                <code>localStorage</code> persists data between browser sessions.
+                <code>sessionStorage</code> clears when the tab closes.
+                Both only store <strong>strings</strong> — always <code>JSON.stringify</code>/<code>parse</code> for objects.
+                And never store auth tokens or sensitive data here — any JavaScript on the page can read it.
+            </p>
+
+            <div class="demo-area">
+                <div class="output-panel" id="out-storage" aria-live="polite"></div>
+                <div class="btn-row">
+                    <button class="btn" data-demo="storage-write">Write to storage</button>
+                    <button class="btn btn-secondary" data-demo="storage-read">Read from storage</button>
+                    <button class="btn btn-secondary" data-demo="storage-clear">Clear</button>
+                </div>
+            </div>
+
+            <pre><code class="js">// localStorage — persists until explicitly cleared
+localStorage.setItem("theme", "dark");
+localStorage.getItem("theme");  // "dark"
+localStorage.removeItem("theme");
+localStorage.clear();           // removes ALL items for this origin
+
+// ⚠️ Only strings are stored — objects must be serialised
+const prefs = { theme: "dark", lang: "fr", fontSize: 16 };
+localStorage.setItem("prefs", JSON.stringify(prefs));
+
+const restored = JSON.parse(localStorage.getItem("prefs") ?? "null");
+
+// Utility wrapper — handles errors and serialisation
+const store = {
+    get(key, fallback = null) {
+        try {
+            const item = localStorage.getItem(key);
+            return item !== null ? JSON.parse(item) : fallback;
+        } catch {
+            return fallback; // JSON.parse failed
+        }
+    },
+    set(key, value) {
+        try {
+            localStorage.setItem(key, JSON.stringify(value));
+        } catch (err) {
+            // QuotaExceededError — storage full
+            console.error("Storage write failed:", err.message);
+        }
+    },
+    remove(key) { localStorage.removeItem(key); },
+};
+
+// sessionStorage — same API, but cleared when tab closes
+sessionStorage.setItem("draft", "unsaved content");
+
+// ⚠️ Security: never store sensitive data in storage
+// localStorage is accessible by any JS on the page (XSS risk)
+// Use httpOnly cookies for auth tokens</code></pre>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             § 18 — SECURITY PITFALLS
+        ════════════════════════════════════════════════════════════════ -->
+        <section id="security" class="concept-section security-section">
+            <h2><span class="section-num">18</span> Security Pitfalls</h2>
+            <p class="security-warning">
+                ⚠️ This section exists because these mistakes are extremely common and have
+                real consequences. Read every item here. If you use any of the ❌ patterns,
+                you are introducing a vulnerability.
+            </p>
+
+            <div class="demo-area">
+                <div class="output-panel" id="out-security" aria-live="polite"></div>
+                <button class="btn btn-danger" data-demo="security">Show pitfalls</button>
+            </div>
+
+            <pre><code class="js">// ── 1. XSS via innerHTML ─────────────────────────────────────────────
+// ❌ DANGEROUS — user-controlled HTML executes scripts
+element.innerHTML = userInput; // if userInput = "&lt;img src=x onerror=alert(1)&gt;"
+
+// ✅ SAFE — textContent treats everything as plain text, never HTML
+element.textContent = userInput;
+
+// ✅ SAFE — sanitise if HTML is truly needed (use a library)
+// import DOMPurify from "dompurify";
+// element.innerHTML = DOMPurify.sanitize(userInput);
+
+// ── 2. eval() and friends ────────────────────────────────────────────
+// ❌ DANGEROUS — executes arbitrary code strings
+eval(userCode);
+setTimeout(userCode, 0);   // setTimeout accepts strings — same risk
+new Function(userCode)();  // same risk
+
+// ✅ SAFE — there is no valid use case for eval() with user input
+// If you feel the need to eval user input, redesign your architecture.
+
+// ── 3. Prototype Pollution ───────────────────────────────────────────
+// ❌ DANGEROUS — merging user objects can poison Object.prototype
+function merge(target, source) {
+    for (const key in source) {
+        target[key] = source[key]; // __proto__ key poisons everything!
+    }
+}
+const payload = JSON.parse('{"__proto__":{"isAdmin":true}}');
+merge({}, payload);
+({}).isAdmin; // true — every object is now "admin"
+
+// ✅ SAFE — use Object.keys() (own keys only) + block dangerous names
+function safeMerge(target, source) {
+    const blocked = new Set(["__proto__", "constructor", "prototype"]);
+    for (const key of Object.keys(source)) {
+        if (blocked.has(key)) continue;
+        target[key] = source[key];
+    }
+}
+
+// ── 4. Sensitive data in localStorage ───────────────────────────────
+// ❌ DANGEROUS — any JS on the page can read localStorage (XSS pivots here)
+localStorage.setItem("auth_token", token);
+localStorage.setItem("password", password);
+
+// ✅ SAFE — use httpOnly cookies (JS cannot read them)
+// Handle auth on the server. Never store credentials client-side.
+
+// ── 5. Missing origin check on postMessage ───────────────────────────
+// ❌ DANGEROUS — accepts messages from any origin
+window.addEventListener("message", (e) => doSomething(e.data));
+
+// ✅ SAFE — always verify the sender
+window.addEventListener("message", (e) => {
+    if (e.origin !== "https://your-trusted-domain.com") return;
+    doSomething(e.data);
+});</code></pre>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             § 19 — PERFORMANCE
+        ════════════════════════════════════════════════════════════════ -->
+        <section id="performance" class="concept-section">
+            <h2><span class="section-num">19</span> Performance Patterns</h2>
+            <p>
+                JavaScript runs on the main thread — the same thread that handles rendering.
+                Heavy or frequent work blocks the UI. These patterns help you stay responsive.
+            </p>
+
+            <div class="demo-area">
+                <div class="perf-demo">
+                    <div class="perf-row">
+                        <label>Debounced input (fires 400ms after you stop typing):</label>
+                        <input type="text" id="debounce-input" placeholder="Type here..." class="event-input">
+                        <div id="debounce-output" class="perf-output">Waiting…</div>
+                    </div>
+                    <div class="perf-row">
+                        <label>Scroll progress (throttled to 100ms):</label>
+                        <div id="scroll-progress-display" class="perf-output">Scroll the page ↑↓</div>
+                    </div>
+                    <div class="perf-row">
+                        <label>Fade-in on scroll (IntersectionObserver):</label>
+                        <div class="fade-targets">
+                            <div class="fade-box">Box A</div>
+                            <div class="fade-box">Box B</div>
+                            <div class="fade-box">Box C</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <pre><code class="js">// ── Debounce — fire only after N ms of silence ───────────────────────
+// Use: search input, resize handlers
+function debounce(fn, delay) {
+    let timer;
+    return function(...args) {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn.apply(this, args), delay);
+    };
+}
+
+const handleSearch = debounce((query) => {
+    console.log("Searching for:", query); // fires 400ms after last keystroke
+}, 400);
+
+document.querySelector("#search").addEventListener("input", (e) => {
+    handleSearch(e.target.value);
+});
+
+// ── Throttle — fire at most once per N ms ────────────────────────────
+// Use: scroll, mousemove, resize (when you need periodic updates)
+function throttle(fn, limit) {
+    let lastCall = 0;
+    return function(...args) {
+        const now = Date.now();
+        if (now - lastCall >= limit) {
+            lastCall = now;
+            fn.apply(this, args);
+        }
+    };
+}
+
+const handleScroll = throttle(() => {
+    const pct = Math.round(
+        (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100
+    );
+    console.log("Scroll:", pct + "%");
+}, 100); // at most once per 100ms
+
+window.addEventListener("scroll", handleScroll);
+
+// ── IntersectionObserver — detect visibility efficiently ─────────────
+// No scroll event, no getBoundingClientRect in a loop — browser handles it
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target); // stop watching after trigger
+        }
+    });
+}, { threshold: 0.2 }); // trigger when 20% visible
+
+document.querySelectorAll(".fade-box").forEach(el => observer.observe(el));</code></pre>
+        </section>
+
+        <!-- ─── Footer ────────────────────────────────────────────────── -->
+        <footer class="page-footer">
+            <p>
+                Part of <a href="../../README.md">CodeSamples</a> — a free, community learning resource.
+                Read the code. Understand it. Then make it yours.
+            </p>
+            <p>MIT License — <a href="../../DISCLAIMER.md">Disclaimer</a> · <a href="../../CODE_OF_CONDUCT.md">Code of Conduct</a></p>
+        </footer>
+
+    </main>
+
+    <!-- type="module" enables ES modules, strict mode, and module scope -->
+    <script type="module" src="main.js"></script>
+</body>
+</html>

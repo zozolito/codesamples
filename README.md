@@ -26,7 +26,7 @@ If you are an experienced developer, contribute. Share the thing that took you t
 
 | Language | Status | What you'll find |
 |---|---|---|
-| **JavaScript** | 🟢 Active | DOM manipulation, async/await, security pitfalls, ES modules |
+| **JavaScript** | 🟢 Active | Variables, closures, async/await, DOM, events, security pitfalls — Reference + interactive examples |
 | **CSS** | 🟢 Active | Layouts, responsive design, animations, Reference + live examples |
 | **Python** | 🟢 Active | Clean code, scripting, data handling, security basics |
 | **C#** | 🟢 Active | OOP, .NET patterns, LINQ, practical examples |
@@ -124,7 +124,7 @@ Si tu es un développeur expérimenté, contribue. Partage ce bug qui t'a pris t
 
 | Langage | État | Ce que tu trouveras |
 |---|---|---|
-| **JavaScript** | 🟢 Actif | Manipulation du DOM, async/await, failles de sécurité, modules ES |
+| **JavaScript** | 🟢 Actif | Variables, closures, async/await, DOM, événements, failles de sécurité — Référence + exemples interactifs |
 | **CSS** | 🟢 Actif | Layouts, responsive, animations, Référence + exemples interactifs |
 | **Python** | 🟢 Actif | Code propre, scripting, traitement de données, bases de sécurité |
 | **C#** | 🟢 Actif | POO, patterns .NET, LINQ, exemples pratiques |
