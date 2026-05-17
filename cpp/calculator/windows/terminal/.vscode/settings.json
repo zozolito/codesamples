@@ -1,0 +1,50 @@
+{
+    // ─────────────────────────────────────────────────────────────────────────
+    // settings.json — workspace settings for the C++ Windows Terminal Calculator
+    //
+    // These override VS Code user settings for this folder only.
+    // ─────────────────────────────────────────────────────────────────────────
+
+    // ── IntelliSense configuration ────────────────────────────────────────────
+    "C_Cpp.default.cppStandard": "c++17",
+    // The project uses C++17 features: std::string_view (optional),
+    // if-with-initialiser (C++17), structured bindings (C++17).
+    // Telling IntelliSense the correct standard prevents false "unknown feature" errors.
+
+    "C_Cpp.default.compilerPath": "g++",
+    // Adjust this if g++ is not on PATH, e.g.:
+    // "C:/msys64/mingw64/bin/g++.exe"
+
+    "C_Cpp.default.includePath": [
+        "${workspaceFolder}/src",
+        "${workspaceFolder}/src/engine"
+    ],
+    // Tells IntelliSense where to look for headers.
+    // main.cpp includes "engine/Calculator.hpp" relative to src/ —
+    // adding src/ here makes F12 (Go to Definition) and autocomplete work.
+
+    "C_Cpp.default.defines": [],
+    // Any preprocessor macros you want IntelliSense to know about.
+    // Empty for now — add e.g. "DEBUG" here if you create conditional code.
+
+    // ── Editor preferences ────────────────────────────────────────────────────
+    "editor.formatOnSave": false,
+    // C++ formatting is opinionated. The code in this project is manually
+    // formatted for readability (aligned comments, visual columns).
+    // Auto-format on save would destroy that alignment.
+    // If you prefer auto-format, set this to true and configure
+    // C_Cpp.clang_format_style to your preference.
+
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    // 4-space indentation. Consistent with the source files.
+
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+
+    // ── File associations ─────────────────────────────────────────────────────
+    "files.associations": {
+        "*.hpp": "cpp",
+        "*.h": "c"
+    }
+}

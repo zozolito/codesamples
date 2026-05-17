@@ -1,0 +1,93 @@
+{
+    // ─────────────────────────────────────────────────────────────────────────
+    // launch.json — Debugger configurations
+    //
+    // Uses GDB through the C/C++ extension (ms-vscode.cpptools).
+    // Requires MinGW-w64 to be installed and on PATH (same as tasks.json).
+    //
+    // ── What the debugger lets you do ────────────────────────────────────────
+    //
+    //  • Set a breakpoint on any line (F9 or click the gutter)
+    //  • Step through code line by line (F10 = step over, F11 = step into)
+    //  • Inspect variables in the Variables panel
+    //  • Watch expressions change as you step (e.g., watch state_ or currentInput_)
+    //  • See the call stack — what called what, in what order
+    //
+    // Practical suggestion: put a breakpoint at the top of Calculator::pressEquals()
+    // and step through it to understand the repeated-= behaviour.
+    // ─────────────────────────────────────────────────────────────────────────
+    "version": "0.2.0",
+    "configurations": [
+
+        // ── Debug: Calculator ───────────────────────────────────────────────
+        {
+            "name": "Debug: Calculator",
+            "type": "cppdbg",
+            "request": "launch",
+            // Path to the binary produced by the "build (debug)" task
+            "program": "${workspaceFolder}/bin/calculator.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            // The calculator renders to the console — launch an external terminal
+            // so that ANSI sequences, _getch(), and colours work correctly.
+            // The integrated terminal cannot handle _getch() in debug mode.
+            "externalConsole": true,
+            // Compile before launching
+            "preLaunchTask": "build (debug)",
+            // GDB bundled with MinGW-w64
+            "MIMode": "gdb",
+            "miDebuggerPath": "gdb.exe",
+            "setupCommands": [
+                {
+                    // Pretty-print STL containers (std::string, std::vector, etc.)
+                    // Without this, inspecting a std::string in the Variables panel
+                    // shows raw memory instead of the string value.
+                    "description": "Enable pretty-printing for GDB",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    // Show source-level stepping instead of assembly-level.
+                    // When you press F10, you advance one source line, not one
+                    // machine instruction.
+                    "description": "Set disassembly-flavor to intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+
+        // ── Debug: Calculator (stop on entry) ───────────────────────────────
+        // Same as above but pauses at the first line of main() immediately.
+        // Useful when you want to step through the entire startup sequence —
+        // for example to understand setupConsole() in detail.
+        {
+            "name": "Debug: Calculator (stop on entry)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/calculator.exe",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "preLaunchTask": "build (debug)",
+            "MIMode": "gdb",
+            "miDebuggerPath": "gdb.exe",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for GDB",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set disassembly-flavor to intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ]
+        }
+    ]
+}

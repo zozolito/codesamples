@@ -28,6 +28,7 @@ If you are an experienced developer, contribute. Share the thing that took you t
 |---|---|---|
 | **JavaScript** | 🟢 Active | Variables, closures, async/await, DOM, events, security pitfalls — Reference + interactive examples |
 | **CSS** | 🟢 Active | Layouts, responsive design, animations, Reference + live examples |
+| **Java** | 🟢 Active | OOP, generics, streams, records — history of the language and Android |
 | **Python** | 🟢 Active | Clean code, scripting, data handling, security basics |
 | **C#** | 🟢 Active | OOP, .NET patterns, LINQ, practical examples |
 | **C** | 🟢 Active | Pointers, memory management, bare-metal OS (BIOS + UEFI) |
@@ -43,6 +44,14 @@ If you are an experienced developer, contribute. Share the thing that took you t
 FORTRAN (Formula Translation) was born in 1957. It is older than most of your parents. It powered the Apollo missions, the first weather simulations, the early days of scientific computing.
 
 Understanding FORTRAN is not about becoming a FORTRAN developer. It is about understanding that **every abstraction you use today was built on top of something else**. Knowing the roots makes you a better programmer. Full stop.
+
+---
+
+### The Calculator Project
+
+Every language in this repository will implement the same application: a desktop calculator with memory functions, operation history, and proper decimal handling. The same spec, every language, every platform it naturally supports — console, graphical, Android, web.
+
+Read **[CALCULATOR.md](./CALCULATOR.md)** for the full specification, the platform matrix, the architecture requirements, and what to look for when you compare implementations.
 
 ---
 
@@ -126,6 +135,7 @@ Si tu es un développeur expérimenté, contribue. Partage ce bug qui t'a pris t
 |---|---|---|
 | **JavaScript** | 🟢 Actif | Variables, closures, async/await, DOM, événements, failles de sécurité — Référence + exemples interactifs |
 | **CSS** | 🟢 Actif | Layouts, responsive, animations, Référence + exemples interactifs |
+| **Java** | 🟢 Actif | POO, génériques, streams, records — histoire du langage et d'Android |
 | **Python** | 🟢 Actif | Code propre, scripting, traitement de données, bases de sécurité |
 | **C#** | 🟢 Actif | POO, patterns .NET, LINQ, exemples pratiques |
 | **C** | 🟢 Actif | Pointeurs, gestion mémoire, OS bare-metal (BIOS + UEFI) |
@@ -141,6 +151,14 @@ Si tu es un développeur expérimenté, contribue. Partage ce bug qui t'a pris t
 FORTRAN (Formula Translation) est né en 1957. Il est plus vieux que la plupart de tes parents. Il a propulsé les missions Apollo, les premières simulations météorologiques, les débuts du calcul scientifique.
 
 Comprendre le FORTRAN, ce n'est pas devenir un développeur FORTRAN. C'est comprendre que **chaque abstraction que tu utilises aujourd'hui est construite sur quelque chose d'autre**. Connaître les racines fait de toi un meilleur programmeur. Point.
+
+---
+
+### Le Projet Calculatrice
+
+Chaque langage de ce dépôt va implémenter la même application : une calculatrice de bureau avec fonctions mémoire, historique des opérations et gestion correcte des décimales. Même spécification, chaque langage, chaque plateforme qu'il supporte naturellement — console, graphique, Android, web.
+
+Lis **[CALCULATOR.md](./CALCULATOR.md)** pour la spécification complète, la matrice des plateformes, les exigences d'architecture et ce qu'il faut observer quand tu compares les implémentations.
 
 ---
 

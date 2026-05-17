@@ -1,0 +1,19 @@
+{
+    // ─────────────────────────────────────────────────────────────────────────
+    // extensions.json — recommended VS Code extensions for this project
+    //
+    // When you open this folder, VS Code will prompt: "Do you want to install
+    // the recommended extensions for this workspace?" — say yes.
+    // ─────────────────────────────────────────────────────────────────────────
+    "recommendations": [
+        // C/C++ — IntelliSense, debugging, code navigation for C and C++.
+        // This is the essential extension. Without it: no autocomplete, no
+        // type-checking, no F12 (Go to Definition), no debugger integration.
+        "ms-vscode.cpptools",
+
+        // C/C++ Extension Pack — bundles the above with CMake Tools and Themes.
+        // Install this if you want a more complete C++ environment.
+        // (cpptools alone is sufficient for this project.)
+        "ms-vscode.cpptools-extension-pack"
+    ]
+}

@@ -1,0 +1,123 @@
+{
+    // ─────────────────────────────────────────────────────────────────────────
+    // tasks.json — VS Code build tasks for the C++ Windows Terminal Calculator
+    //
+    // Prerequisites:
+    //   MinGW-w64 (g++) must be on PATH.
+    //   Recommended: winget install -e --id MSYS2.MSYS2, then install mingw-w64-x86_64-gcc
+    //   OR: install from https://www.mingw-w64.org/
+    //
+    // The "build" task is the default — Ctrl+Shift+B runs it directly.
+    // The "run" task builds first, then launches the calculator in the terminal.
+    // ─────────────────────────────────────────────────────────────────────────
+    "version": "2.0.0",
+    "tasks": [
+
+        // ── Debug build (default) ───────────────────────────────────────────
+        // -g includes debug symbols for the debugger (launch.json uses this).
+        // -Wall -Wextra turn on all useful warnings — treat them as guidance,
+        // not obstacles. Understanding a warning is more valuable than silencing it.
+        {
+            "label": "build (debug)",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-std=c++17",
+                "-Wall",
+                "-Wextra",
+                "-g",
+                "-o", "${workspaceFolder}/bin/calculator.exe",
+                "${workspaceFolder}/src/engine/Calculator.cpp",
+                "${workspaceFolder}/src/main.cpp"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "clear": true
+            },
+            // problemMatcher teaches VS Code to parse g++ error output and
+            // show red underlines + Problems panel entries. $gcc is built in.
+            "problemMatcher": ["$gcc"],
+            "detail": "Compile with debug symbols (-g). Output: bin/calculator.exe"
+        },
+
+        // ── Release build ───────────────────────────────────────────────────
+        // -O2 enables standard optimisations. -DNDEBUG disables assert() calls.
+        // -s strips debug symbols to reduce binary size.
+        // For a learning project these matter less — but knowing the flags is
+        // half the education.
+        {
+            "label": "build (release)",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-std=c++17",
+                "-Wall",
+                "-Wextra",
+                "-O2",
+                "-DNDEBUG",
+                "-s",
+                "-o", "${workspaceFolder}/bin/calculator.exe",
+                "${workspaceFolder}/src/engine/Calculator.cpp",
+                "${workspaceFolder}/src/main.cpp"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "clear": true
+            },
+            "problemMatcher": ["$gcc"],
+            "detail": "Compile with optimisations (-O2). Output: bin/calculator.exe"
+        },
+
+        // ── Run ─────────────────────────────────────────────────────────────
+        // Builds first (dependsOn), then launches in the integrated terminal.
+        // The calculator uses _getch() and ANSI sequences — it needs a real
+        // terminal, not just the output panel.
+        {
+            "label": "run",
+            "type": "shell",
+            "command": "${workspaceFolder}/bin/calculator.exe",
+            "dependsOn": ["build (debug)"],
+            "group": "test",
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": true,
+                "panel": "new"
+            },
+            "problemMatcher": [],
+            "detail": "Build then run calculator.exe in the integrated terminal"
+        },
+
+        // ── Clean ───────────────────────────────────────────────────────────
+        // Removes the compiled binary. Useful before a release build to ensure
+        // you are not running a stale executable.
+        {
+            "label": "clean",
+            "type": "shell",
+            "command": "cmd",
+            "args": [
+                "/c",
+                "if exist \"${workspaceFolder}\\bin\\calculator.exe\" del \"${workspaceFolder}\\bin\\calculator.exe\""
+            ],
+            "group": "none",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "panel": "shared"
+            },
+            "problemMatcher": [],
+            "detail": "Delete bin/calculator.exe"
+        }
+    ]
+}

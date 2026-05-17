@@ -1,0 +1,32 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# .gitignore — C++ Windows Terminal Calculator
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Compiled output
+# The bin/ folder is created at build time — never commit executables to Git.
+# Anyone who clones the repo can build it themselves in seconds.
+bin/
+*.exe
+*.out
+
+# Object files and intermediate build artefacts
+*.o
+*.obj
+
+# Debug symbols and linker databases (MSVC)
+*.pdb
+*.ilk
+
+# MSVC-specific
+*.vcxproj.user
+*.suo
+.vs/
+
+# MinGW/GCC profile-guided optimisation data
+*.gcda
+*.gcno
+*.gcov
+
+# Editor junk
+.DS_Store
+Thumbs.db
